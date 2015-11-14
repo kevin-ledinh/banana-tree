@@ -410,7 +410,7 @@
     </GenFiles>
     <SignalListFile>Documentation\usb-uart-kds_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>2</ProjectModificationStamp>
+    <ProjectModificationStamp>3</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
