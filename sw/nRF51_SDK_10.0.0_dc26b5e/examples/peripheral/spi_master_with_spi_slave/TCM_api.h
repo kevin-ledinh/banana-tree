@@ -38,12 +38,11 @@
 #ifndef TCM_API_H_
 #define TCM_API_H_
 
-//#include "TCM.h"
-//#include "TCM_CS.h"
-//#include "TCM_EN.h"
-//#include "Busy.h"
-#include "stdint.h"
+#include <stdbool.h>
+#include <stdint.h>
 
+bool TCM__init( void );
+void TCM__GetDeviceInfo( void );
 void TCM_enable(void);
 void TCM_disable(void);
 uint8_t TCM_DisplayUpdate(void);

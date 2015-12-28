@@ -38,9 +38,35 @@
 #include "TCM_api.h"
 #include "nrf_delay.h"
 #include "dev__tcm__gpio.h"
+#include "dev__tcm__spi.h"
 
 uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
+uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x001, 0x00};
 uint8_t tcm_answer[200] ={0};
+
+/**
+ * @brief Initialise the connections to the TCM module
+ * @return true or false
+ */
+bool TCM__init( void )
+{
+	dev__tcm__gpio__init();
+	dev__tcm__spi__init();
+	
+	return true;
+}
+
+/**
+ * @brief Get Device Info
+ * @return none
+ */
+void TCM__GetDeviceInfo( void )
+{
+	uint8_t reply[128] = "";
+	TCM_enable();
+	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(reply));
+	TCM_disable();
+}
 
 /**
  * @brief Function that displays the image on the device TCM
@@ -126,7 +152,7 @@ uint8_t TCM_GetAnswer(void)
  */
 void TCM_enable(void)
 {
-		dev__tcm__gpio__set_enable_state(false);
+		dev__tcm__gpio__set_enable_pin_state(false);
 		(void)nrf_delay_ms(40);
 }
 
@@ -136,7 +162,7 @@ void TCM_enable(void)
 void TCM_disable(void)
 {
 		(void)nrf_delay_ms(20);
-		dev__tcm__gpio__set_enable_state(true);
+		dev__tcm__gpio__set_enable_pin_state(true);
 }
 
 /* ***(C) COPYRIGHT Embedded Pico Systems 2015***   ***END OF FILE***   */
