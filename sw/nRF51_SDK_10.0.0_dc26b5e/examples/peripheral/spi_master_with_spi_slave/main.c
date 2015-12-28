@@ -27,6 +27,7 @@
 #include "app_timer.h"
 #include "nrf_drv_spi.h"
 #include "nordic_common.h"
+#include "TCM_api.h"
 
 /*
  * This example uses only one instance of the SPI master.

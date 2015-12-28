@@ -36,9 +36,8 @@
  */
 
 #include "TCM_api.h"
-//#include "TCM.h"
-//#include "TCM_SendReceiveBlock.h"
-//#include "Events.h"
+#include "nrf_delay.h"
+#include "dev__tcm__gpio.h"
 
 uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
 uint8_t tcm_answer[200] ={0};
@@ -51,16 +50,16 @@ uint8_t TCM_DisplayUpdate(void)
 {  										
 	uint8_t i;
 
-//	while(!Busy_GetVal(Busy_DeviceData));
-//	for(i=0;i<25;i++){}
+	while( dev__tcm__gpio__is_busy() );
+	for(i=0;i<25;i++){}
 //	TCM_CS_ClrVal(NULL);
-//	for(i=0;i<25;i++){}
+	for(i=0;i<25;i++){}
 //	
 //	//Send display commands
 //	TCM_SendReceiveBlock(TCM_DeviceData, display_update, 5,tcm_answer,5);
 
 //	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-//	for(i=0;i<20;i++){}
+	for(i=0;i<20;i++){}
 //	TCM_CS_SetVal(NULL);
 
 	return tcm_answer[0];
@@ -76,19 +75,19 @@ uint8_t TCM_ImageUpload(uint8_t *upload_image_ptr, uint8_t image_size)
 {
 	uint8_t i;
 
-//	while(!Busy_GetVal(Busy_DeviceData));//busy
-//	
-//	for(i=0;i<25;i++){}
+	while( dev__tcm__gpio__is_busy() );//busy
+
+	for(i=0;i<25;i++){}
 //	TCM_CS_ClrVal(NULL);	
-//	
-//	for(i=0;i<25;i++){}
-//	
-//	//Send image block
+
+	for(i=0;i<25;i++){}
+	
+	//Send image block
 //	TCM_SendReceiveBlock(TCM_DeviceData, upload_image_ptr, image_size, tcm_answer,image_size);	
-//		
+
 //	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-//	
-//	for(i=0;i<20;i++){}	 
+	
+	for(i=0;i<20;i++){}	 
 //	TCM_CS_SetVal(NULL);
 
 	return tcm_answer[0];
@@ -103,20 +102,20 @@ uint8_t TCM_GetAnswer(void)
 	uint8_t i;
 	uint8_t nonetable[3]={0,0,0};
 
-//	while(!Busy_GetVal(Busy_DeviceData));
-//	
-//	tcm_answer[0]=0x0;
-//	
-//	for(i=0;i<25;i++){}
+	while( dev__tcm__gpio__is_busy() );
+	
+	tcm_answer[0]=0x0;
+	
+	for(i=0;i<25;i++){}
 //	TCM_CS_ClrVal(NULL);	
-//	
-//	for(i=0;i<25;i++){}
-//	
+	
+	for(i=0;i<25;i++){}
+	
 //	TCM_SendReceiveBlock(TCM_DeviceData, nonetable, 2, tcm_answer,2);
 //	
 //	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-//	
-//	for(i=0;i<20;i++){}	 
+	
+	for(i=0;i<20;i++){}	 
 //	TCM_CS_SetVal(NULL);
 
 	return tcm_answer[0];
@@ -127,8 +126,8 @@ uint8_t TCM_GetAnswer(void)
  */
 void TCM_enable(void)
 {
-//	TCM_EN_ClrVal(NULL);	
-//	WAIT_Waitms(40);
+		dev__tcm__gpio__set_enable_state(false);
+		(void)nrf_delay_ms(40);
 }
 
 /**
@@ -136,8 +135,8 @@ void TCM_enable(void)
  */
 void TCM_disable(void)
 {
-//	WAIT_Waitms(20);
-//	TCM_EN_SetVal(NULL);			
+		(void)nrf_delay_ms(20);
+		dev__tcm__gpio__set_enable_state(true);
 }
 
 /* ***(C) COPYRIGHT Embedded Pico Systems 2015***   ***END OF FILE***   */

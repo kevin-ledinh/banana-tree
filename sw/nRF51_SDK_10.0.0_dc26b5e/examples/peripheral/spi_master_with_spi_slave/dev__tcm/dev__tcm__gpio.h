@@ -1,22 +1,23 @@
 /*============================================================================
-@brief A C source header template
+@brief A C source header for TCM GPIO pins
 ------------------------------------------------------------------------------
-<!-- Written by Andy Ackland -->
-<!-- Copyright (C) 2013 All rights reserved -->
+<!-- Written by Kevin Le Dinh -->
+<!-- Copyright (C) 2015 All rights reserved -->
 ============================================================================*/
 
-#ifndef 00__template_h
-#define 00__template_h
+#ifndef dev__tcm__gpio_h
+#define dev__tcm__gpio_h
 
 /*----------------------------------------------------------------------------
   @brief
 
-We use 00_ prefix so that this is listed first in project files.
 ----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------
   nested include files
 ----------------------------------------------------------------------------*/
+#include <stdbool.h>
+#include "stdint.h"
 
 /*----------------------------------------------------------------------------
   macros
@@ -37,6 +38,11 @@ We use 00_ prefix so that this is listed first in project files.
 /*----------------------------------------------------------------------------
   prototypes
 ----------------------------------------------------------------------------*/
+void dev__tcm__gpio__init( void );
+
+void dev__tcm__gpio__set_enable_state( bool state );
+
+bool dev__tcm__gpio__is_busy( void );
 
 /*----------------------------------------------------------------------------
   compile time checks
