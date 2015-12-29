@@ -40,10 +40,10 @@
 #include "dev__tcm__gpio.h"
 #include "dev__tcm__spi.h"
 
-uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
-uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
-uint8_t CMD_GetDeviceId[]  = {0x30, 0x02, 0x01, 0x14};
-uint8_t tcm_answer[200] ={0};
+static uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
+static uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
+static uint8_t CMD_GetDeviceId[]  = {0x30, 0x02, 0x01, 0x14};
+static 				uint8_t tcm_answer[200] ={0};
 
 /**
  * @brief Initialise the connections to the TCM module
@@ -63,7 +63,7 @@ bool TCM__init( void )
  */
 void TCM__GetDeviceInfo( void )
 {
-	uint8_t reply[128] = "";
+	uint8_t reply[64] = "";
 	TCM_enable();
 	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(CMD_GetDeviceInfo));
 	spi_send_recv(reply , tcm_answer , 64 , 64);
@@ -79,17 +79,14 @@ uint8_t TCM_DisplayUpdate(void)
 	uint8_t i;
 
 	while( dev__tcm__gpio__is_busy() );
+	
 	for(i=0;i<25;i++){}
-//	TCM_CS_ClrVal(NULL);
-	for(i=0;i<25;i++){}
-//	
-//	//Send display commands
-//	TCM_SendReceiveBlock(TCM_DeviceData, display_update, 5,tcm_answer,5);
+	
+	//Send display commands
+	spi_send_recv(display_update , tcm_answer , 5 , 5);
 
-//	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-	for(i=0;i<20;i++){}
-//	TCM_CS_SetVal(NULL);
-
+		//TODO: check SPI txrx error
+		
 	return tcm_answer[0];
 }
 
@@ -106,18 +103,12 @@ uint8_t TCM_ImageUpload(uint8_t *upload_image_ptr, uint8_t image_size)
 	while( dev__tcm__gpio__is_busy() );//busy
 
 	for(i=0;i<25;i++){}
-//	TCM_CS_ClrVal(NULL);	
-
-	for(i=0;i<25;i++){}
 	
 	//Send image block
-//	TCM_SendReceiveBlock(TCM_DeviceData, upload_image_ptr, image_size, tcm_answer,image_size);	
+	spi_send_recv(upload_image_ptr , tcm_answer , image_size , image_size);
 
-//	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-	
-	for(i=0;i<20;i++){}	 
-//	TCM_CS_SetVal(NULL);
-
+		//TODO: check SPI txrx error
+		
 	return tcm_answer[0];
 }
 
@@ -135,17 +126,11 @@ uint8_t TCM_GetAnswer(void)
 	tcm_answer[0]=0x0;
 	
 	for(i=0;i<25;i++){}
-//	TCM_CS_ClrVal(NULL);	
-	
-	for(i=0;i<25;i++){}
-	
-//	TCM_SendReceiveBlock(TCM_DeviceData, nonetable, 2, tcm_answer,2);
-//	
-//	while(!TCM_GetBlockSentStatus(TCM_DeviceData));
-	
-	for(i=0;i<20;i++){}	 
-//	TCM_CS_SetVal(NULL);
-
+		
+	spi_send_recv(nonetable , tcm_answer , 2 , 2);
+		
+		//TODO: check SPI txrx error
+		
 	return tcm_answer[0];
 }
 

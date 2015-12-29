@@ -91,13 +91,7 @@ int main(void)
 	
     for (;;)
     {
-//        if (m_transfer_completed)
-//        {
-//            m_transfer_completed = false;
 
-//            // Set buffers and start data transfer.
-//            spi_send_recv(m_tx_data, m_rx_data, TX_RX_BUF_LENGTH);
-//        }
     }
 }
 
