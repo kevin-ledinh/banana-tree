@@ -35,7 +35,7 @@
     #error "No SPI enabled."
 #endif
 
-#define DELAY_MS                 1000                /**< Timer Delay in milli-seconds. */
+#define DELAY_MS                 1                /**< Timer Delay in milli-seconds. */
 /*----------------------------------------------------------------------------
   type definitions
 ----------------------------------------------------------------------------*/
@@ -58,22 +58,10 @@
 
 static nrf_drv_spi_config_t const config =
 {
-		#if (SPI0_ENABLED == 1)
-				.sck_pin  = SPIM0_SCK_PIN,
-				.mosi_pin = SPIM0_MOSI_PIN,
-				.miso_pin = SPIM0_MISO_PIN,
-				.ss_pin   = SPIM0_SS_PIN,
-		#elif (SPI1_ENABLED == 1)
-				.sck_pin  = SPIM1_SCK_PIN,
-				.mosi_pin = SPIM1_MOSI_PIN,
-				.miso_pin = SPIM1_MISO_PIN,
-				.ss_pin   = SPIM1_SS_PIN,
-		#elif (SPI2_ENABLED == 1)
-				.sck_pin  = SPIM2_SCK_PIN,
-				.mosi_pin = SPIM2_MOSI_PIN,
-				.miso_pin = SPIM2_MISO_PIN,
-				.ss_pin   = SPIM2_SS_PIN,
-		#endif
+		.sck_pin  = SPIM0_SCK_PIN,
+		.mosi_pin = SPIM0_MOSI_PIN,
+		.miso_pin = SPIM0_MISO_PIN,
+		.ss_pin   = SPIM0_SS_PIN,
 		.irq_priority = APP_IRQ_PRIORITY_LOW,
 		.orc          = 0xCC,
 		.frequency    = NRF_DRV_SPI_FREQ_2M,
@@ -101,7 +89,8 @@ void dev__tcm__spi__init( void )
  *
  * @param[in] p_tx_data     A pointer to a buffer TX.
  * @param[in] p_rx_data     A pointer to a buffer RX.
- * @param[in] len           A length of the data buffers.
+ * @param[in] tx_len        A length of the tx data buffers.
+ * @param[in] rx_len        A length of the rx data buffers.
  */
 uint32_t spi_send_recv(uint8_t * const p_tx_data,
                           uint8_t * const p_rx_data,
