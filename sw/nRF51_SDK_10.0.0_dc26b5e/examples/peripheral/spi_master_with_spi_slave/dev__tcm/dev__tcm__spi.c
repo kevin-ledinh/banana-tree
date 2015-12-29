@@ -76,9 +76,9 @@ static nrf_drv_spi_config_t const config =
 		#endif
 		.irq_priority = APP_IRQ_PRIORITY_LOW,
 		.orc          = 0xCC,
-		.frequency    = NRF_DRV_SPI_FREQ_1M,
-		.mode         = NRF_DRV_SPI_MODE_0,
-		.bit_order    = NRF_DRV_SPI_BIT_ORDER_LSB_FIRST,
+		.frequency    = NRF_DRV_SPI_FREQ_2M,
+		.mode         = NRF_DRV_SPI_MODE_3,
+		.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST,
 };
 /*----------------------------------------------------------------------------
   public functions

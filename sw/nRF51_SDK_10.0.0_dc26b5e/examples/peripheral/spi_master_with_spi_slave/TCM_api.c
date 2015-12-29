@@ -41,7 +41,7 @@
 #include "dev__tcm__spi.h"
 
 uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
-uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x001, 0x00};
+uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
 uint8_t tcm_answer[200] ={0};
 
 /**
@@ -64,7 +64,8 @@ void TCM__GetDeviceInfo( void )
 {
 	uint8_t reply[128] = "";
 	TCM_enable();
-	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(reply));
+	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(CMD_GetDeviceInfo));
+	spi_send_recv(reply , tcm_answer , 64 , 64);
 	TCM_disable();
 }
 
