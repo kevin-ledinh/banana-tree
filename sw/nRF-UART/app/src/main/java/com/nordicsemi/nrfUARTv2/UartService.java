@@ -344,9 +344,9 @@ public class UartService extends Service {
             return;
         }
         RxChar.setValue(value);
-    	boolean status = mBluetoothGatt.writeCharacteristic(RxChar);
+    	while(mBluetoothGatt.writeCharacteristic(RxChar) == false);
     	
-        Log.d(TAG, "write TXchar - status=" + status);  
+//        Log.d(TAG, "write TXchar - status=" + status);
     }
     
     private void showMessage(String msg) {

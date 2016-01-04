@@ -27,7 +27,9 @@ package com.nordicsemi.nrfUARTv2;
 
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 
@@ -66,6 +68,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.*;
 
 public class MainActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
     private static final int REQUEST_SELECT_DEVICE = 1;
@@ -86,6 +89,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private ArrayAdapter<String> listAdapter;
     private Button btnConnectDisconnect,btnSend;
     private EditText edtMessage;
+    private SamplePic mSamplePic;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +107,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         btnConnectDisconnect=(Button) findViewById(R.id.btn_select);
         btnSend=(Button) findViewById(R.id.sendButton);
         edtMessage = (EditText) findViewById(R.id.sendText);
+        mSamplePic = new SamplePic(this);
         service_init();
 
      
@@ -115,22 +120,20 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                     Log.i(TAG, "onClick - BT not enabled yet");
                     Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-                }
-                else {
-                	if (btnConnectDisconnect.getText().equals("Connect")){
-                		
-                		//Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
-                		
-            			Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-            			startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
-        			} else {
-        				//Disconnect button pressed
-        				if (mDevice!=null)
-        				{
-        					mService.disconnect();
-        					
-        				}
-        			}
+                } else {
+                    if (btnConnectDisconnect.getText().equals("Connect")) {
+
+                        //Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
+
+                        Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+                        startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
+                    } else {
+                        //Disconnect button pressed
+                        if (mDevice != null) {
+                            mService.disconnect();
+
+                        }
+                    }
                 }
             }
         });
@@ -140,17 +143,35 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             public void onClick(View v) {
             	EditText editText = (EditText) findViewById(R.id.sendText);
             	String message = editText.getText().toString();
-            	byte[] value;
+            	byte[] value = new byte[20];
+//                byte[] value;
 				try {
 					//send data to service
-					value = message.getBytes("UTF-8");
-					mService.writeRXCharacteristic(value);
+//					value = message.getBytes("UTF-8");
+//					mService.writeRXCharacteristic(value);
+                    int i, j;
+                    for(i = 0, j = 0; i < mSamplePic.GetPic1Size(); i++, j++)
+                    {
+                        if(j == 19)
+                        {
+                            value[j] = mSamplePic.GetPic1()[i];
+                            mService.writeRXCharacteristic(value);
+                            j = 0;
+                            i++;
+//                            Log.d(TAG, "write TXchar - status=");
+                        }
+                        value[j] = mSamplePic.GetPic1()[i];
+                    }
+                    if((i == mSamplePic.GetPic1Size()) && (j != 1)) {
+                        mService.writeRXCharacteristic(Arrays.copyOfRange(value,0,j));
+                    }
+
 					//Update the log with time stamp
 					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-					listAdapter.add("["+currentDateTimeString+"] TX: "+ message);
+					listAdapter.add("["+currentDateTimeString+"] TX: pic1");
                	 	messageListView.smoothScrollToPosition(listAdapter.getCount() - 1);
                	 	edtMessage.setText("");
-				} catch (UnsupportedEncodingException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -161,7 +182,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         // Set initial UI state
         
     }
-    
+
     //UART service connected/disconnected
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
