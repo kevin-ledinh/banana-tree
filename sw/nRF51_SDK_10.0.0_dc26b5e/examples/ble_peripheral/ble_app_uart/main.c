@@ -37,6 +37,7 @@
 #include "app_util_platform.h"
 #include "bsp.h"
 #include "bsp_btn_ble.h"
+#include "TCM_api.h"
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT 0                                           /**< Include the service_changed characteristic. If not enabled, the server's database cannot be changed for the lifetime of the device. */
 
@@ -57,7 +58,7 @@
 #define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(30000, APP_TIMER_PRESCALER) /**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
 #define MAX_CONN_PARAMS_UPDATE_COUNT    3                                           /**< Number of attempts before giving up the connection parameter negotiation. */
 
-#define START_STRING                    "Start...\n"                                /**< The string that will be sent over the UART when the application starts. */
+#define START_STRING                    "Start...\r\n"                                /**< The string that will be sent over the UART when the application starts. */
 
 #define DEAD_BEEF                       0xDEADBEEF                                  /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 
@@ -133,7 +134,7 @@ static void nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t lengt
     {
         while(app_uart_put(p_data[i]) != NRF_SUCCESS);
     }
-    while(app_uart_put('\n') != NRF_SUCCESS);
+    //while(app_uart_put('\n') != NRF_SUCCESS);
 }
 /**@snippet [Handling the data received over BLE] */
 
@@ -435,9 +436,9 @@ static void uart_init(void)
         TX_PIN_NUMBER,
         RTS_PIN_NUMBER,
         CTS_PIN_NUMBER,
-        APP_UART_FLOW_CONTROL_ENABLED,
+        APP_UART_FLOW_CONTROL_DISABLED,
         false,
-        UART_BAUDRATE_BAUDRATE_Baud38400
+        UART_BAUDRATE_BAUDRATE_Baud115200
     };
 
     APP_UART_FIFO_INIT( &comm_params,
@@ -515,16 +516,23 @@ int main(void)
     uint32_t err_code;
     bool erase_bonds;
     uint8_t  start_string[] = START_STRING;
-    
+        
     // Initialize.
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, false);
     uart_init();
-    buttons_leds_init(&erase_bonds);
+    //buttons_leds_init(&erase_bonds);
     ble_stack_init();
     gap_params_init();
     services_init();
     advertising_init();
     conn_params_init();
+    
+    
+    //Initialise TCM board
+    TCM__init();
+
+    // return the TCM board's manufacture ID
+    TCM__GetDeviceInfo();
     
     printf("%s",start_string);
 

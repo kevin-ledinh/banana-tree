@@ -80,6 +80,9 @@ static nrf_drv_spi_config_t const config =
 void dev__tcm__spi__init( void )
 {
     ret_code_t err_code = nrf_drv_spi_init(&m_spi_master, &config, NULL);
+    
+    printf("SPI init: %d\r\n",err_code);
+    
     APP_ERROR_CHECK(err_code);
 }
 

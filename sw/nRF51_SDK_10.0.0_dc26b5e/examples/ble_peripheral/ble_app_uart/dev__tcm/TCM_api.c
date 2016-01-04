@@ -35,6 +35,7 @@
  *
  */
 
+#include <stdio.h>
 #include "TCM_api.h"
 #include "nrf_delay.h"
 #include "dev__tcm__gpio.h"
@@ -67,6 +68,8 @@ void TCM__GetDeviceInfo( void )
 	TCM_enable();
 	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(CMD_GetDeviceInfo));
 	spi_send_recv(reply , tcm_answer , 64 , 64);
+    
+    printf("TCM dev info: %s\r\n",tcm_answer);
 	TCM_disable();
 }
 
