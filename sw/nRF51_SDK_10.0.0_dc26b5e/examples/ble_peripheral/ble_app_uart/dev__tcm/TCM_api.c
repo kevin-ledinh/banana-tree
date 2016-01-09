@@ -44,7 +44,7 @@
 static uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
 static uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
 static uint8_t CMD_GetDeviceId[]  = {0x30, 0x02, 0x01, 0x14};
-static 				uint8_t tcm_answer[200] ={0};
+static uint8_t tcm_answer[200] ={0};
 
 /**
  * @brief Initialise the connections to the TCM module
@@ -66,11 +66,12 @@ void TCM__GetDeviceInfo( void )
 {
 	uint8_t reply[64] = "";
 	TCM_enable();
+    
 	spi_send_recv(CMD_GetDeviceInfo , reply , sizeof(CMD_GetDeviceInfo) , sizeof(CMD_GetDeviceInfo));
 	spi_send_recv(reply , tcm_answer , 64 , 64);
     
     printf("TCM dev info: %s\r\n",tcm_answer);
-	TCM_disable();
+	//TCM_disable();
 }
 
 /**
@@ -153,6 +154,54 @@ void TCM_disable(void)
 {
 		(void)nrf_delay_ms(20);
 		dev__tcm__gpio__set_enable_pin_state(true);
+}
+
+/**
+ * Function signaling that error have occured through LED on board.
+ */ 
+void errorSTOP()
+{
+	TCM_disable();
+}
+/**
+ * Function check if Busy line is going low after DisplayUpdate command. If not - LED is blinking in infinite loop
+ */
+void checkBusy()
+{
+	uint8_t i = 0;
+
+	while (1)
+	{
+		if (dev__tcm__gpio__is_busy())
+		{
+			break;
+		}
+		else if (i == 36) // Gives timeout about 4s
+		{
+			errorSTOP();
+		}
+		(void)nrf_delay_ms(200);
+		i++;
+	}
+}
+
+void checkBusytoHigh()
+{
+	uint8_t i = 0;
+
+	while (1)
+	{
+		if (!dev__tcm__gpio__is_busy())
+		{
+			break;
+		}
+		else if (i == 40) // Gives timeout about 4s
+		{
+			errorSTOP();
+		}
+		(void)nrf_delay_ms(200);
+		i++;
+	}
 }
 
 /* ***(C) COPYRIGHT Embedded Pico Systems 2015***   ***END OF FILE***   */

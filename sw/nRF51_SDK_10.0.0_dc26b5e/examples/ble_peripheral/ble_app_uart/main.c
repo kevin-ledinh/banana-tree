@@ -38,6 +38,7 @@
 #include "bsp.h"
 #include "bsp_btn_ble.h"
 #include "TCM_api.h"
+#include "nrf_delay.h"
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT 0                                           /**< Include the service_changed characteristic. If not enabled, the server's database cannot be changed for the lifetime of the device. */
 
@@ -64,12 +65,15 @@
 
 #define UART_TX_BUF_SIZE                256                                         /**< UART TX buffer size. */
 #define UART_RX_BUF_SIZE                256                                         /**< UART RX buffer size. */
+#define EPD_FILE_SIZE_441               15016
 
 static ble_nus_t                        m_nus;                                      /**< Structure to identify the Nordic UART Service. */
 static uint16_t                         m_conn_handle = BLE_CONN_HANDLE_INVALID;    /**< Handle of the current connection. */
 
 static ble_uuid_t                       m_adv_uuids[] = {{BLE_UUID_NUS_SERVICE, NUS_SERVICE_UUID_TYPE}};  /**< Universally unique service identifier. */
 
+static uint16_t epd_file_size = EPD_FILE_SIZE_441;
+static uint8_t upload_image[255] = { 0x20, 0x01, 0x00, 128 };
 
 /**@brief Function for assert macro callback.
  *
@@ -130,11 +134,49 @@ static void gap_params_init(void)
 /**@snippet [Handling the data received over BLE] */
 static void nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
 {
+//        for (uint32_t i = 0; i < length; i++)
+//        {
+//            while(app_uart_put(p_data[i]) != NRF_SUCCESS);
+//        }
+    //while(app_uart_put('\n') != NRF_SUCCESS);
+    uint8_t tcm_receive;
+    
     for (uint32_t i = 0; i < length; i++)
     {
-        while(app_uart_put(p_data[i]) != NRF_SUCCESS);
+        upload_image[i + 4] = p_data[i];
     }
-    //while(app_uart_put('\n') != NRF_SUCCESS);
+    
+    epd_file_size -= length;
+    upload_image[3] = length;
+    tcm_receive = TCM_ImageUpload(upload_image, length+4);
+    
+  
+    if( epd_file_size == 0 )
+    {
+        epd_file_size = EPD_FILE_SIZE_441;
+//		(void)nrf_delay_ms(1);         //The period of this WAIT is different ~(x 0.5)
+        tcm_receive=TCM_DisplayUpdate();
+//        if(tcm_receive != 0x90)
+//         {
+//            errorSTOP();
+//            return;
+//         }	
+//        (void)nrf_delay_ms(1);
+//        checkBusy(); 			// Check Busy pin to low
+//        
+//         
+//        checkBusytoHigh();		// Check Busy pin to 
+//        
+//         (void)nrf_delay_ms(2);
+//        
+//        tcm_receive=TCM_GetAnswer();
+//        if(tcm_receive != 0x90)
+//         {
+//            errorSTOP();
+//            return;
+//         }	
+        printf("file size: %d\r\n",epd_file_size);
+    }
 }
 /**@snippet [Handling the data received over BLE] */
 

@@ -48,6 +48,9 @@ void TCM_disable(void);
 uint8_t TCM_DisplayUpdate(void);
 uint8_t TCM_ImageUpload(uint8_t *upload_image_ptr, uint8_t image_size);
 uint8_t TCM_GetAnswer(void);
+void errorSTOP(void);
+void checkBusy(void);
+void checkBusytoHigh(void);
 
 #endif /* TCM_API_H_ */
 /* ***(C) COPYRIGHT Embedded Pico Systems 2015***   ***END OF FILE***   */
