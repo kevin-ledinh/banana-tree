@@ -1649,6 +1649,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\dev__tcm\TCM_api.c</FilePath>
             </File>
+            <File>
+              <FileName>tcm__app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\dev__tcm\tcm__app.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3300,6 +3305,11 @@
               <FileName>TCM_api.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\dev__tcm\TCM_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>tcm__app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\dev__tcm\tcm__app.c</FilePath>
             </File>
           </Files>
         </Group>
