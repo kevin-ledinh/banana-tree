@@ -90,6 +90,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private Button btnConnectDisconnect,btnSend;
     private EditText edtMessage;
     private SamplePic mSamplePic;
+    private int picNumber;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +109,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         btnSend=(Button) findViewById(R.id.sendButton);
         edtMessage = (EditText) findViewById(R.id.sendText);
         mSamplePic = new SamplePic(this);
+        picNumber = 0;
         service_init();
 
      
@@ -154,17 +156,31 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                     {
                         if(j == 19)
                         {
-                            value[j] = mSamplePic.GetPic1()[i];
+                            if(picNumber == 0) {
+                                value[j] = mSamplePic.GetPic1()[i];
+                            }
+                            else
+                            {
+                                value[j] = mSamplePic.GetPic2()[i];
+                            }
+
                             mService.writeRXCharacteristic(value);
                             j = 0;
                             i++;
 //                            Log.d(TAG, "write TXchar - status=");
                         }
-                        value[j] = mSamplePic.GetPic1()[i];
+                        if(picNumber == 0) {
+                            value[j] = mSamplePic.GetPic1()[i];
+                        }
+                        else
+                        {
+                            value[j] = mSamplePic.GetPic2()[i];
+                        }
                     }
                     if((i == mSamplePic.GetPic1Size()) && (j != 1)) {
                         mService.writeRXCharacteristic(Arrays.copyOfRange(value,0,j));
                     }
+                    picNumber = (picNumber + 1) & 1;
 
 					//Update the log with time stamp
 					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
