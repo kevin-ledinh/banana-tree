@@ -41,7 +41,7 @@
 #include "dev__tcm__gpio.h"
 #include "dev__tcm__spi.h"
 
-static uint8_t display_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
+static uint8_t display_update[]  = {0x86, 0x01, 0x00, 0x00, 0x00};
 static uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
 static uint8_t CMD_GetDeviceId[]  = {0x30, 0x02, 0x01, 0x14};
 static uint8_t tcm_answer[200] ={0};
