@@ -92,6 +92,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private SamplePic mSamplePic;
     private int picNumber;
     private byte [] txImageCmd = {0x3E , 0x3E , 0x00};
+    private byte [] txImageDoneCmd = {0x3E , 0x3E , 0x02};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,12 +149,11 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             	String message = editText.getText().toString();
             	byte[] value = new byte[20];
                 String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-                mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);
+                mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
                 listAdapter.add("["+currentDateTimeString+"] TX: sending picture");
-                
+
 				try {
 					//send data to service
-//
                     if(picNumber == 0) {
                         mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
                     }
@@ -162,6 +162,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                         mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
                     }
                     picNumber = (picNumber + 1) & 1;
+                    mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
 
 					//Update the log with time stamp
 					currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
