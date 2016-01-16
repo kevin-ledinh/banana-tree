@@ -41,10 +41,13 @@
 #include "dev__tcm__gpio.h"
 #include "dev__tcm__spi.h"
 
-static uint8_t display_update[]  = {0x86, 0x01, 0x00, 0x00, 0x00};
+static uint8_t full_update[]  = {0x24, 0x01, 0x00, 0x00, 0x00};
+static uint8_t flashless_inverted_update[]  = {0x86, 0x01, 0x00, 0x00, 0x00};
+static uint8_t flashless_update[]  = {0x85, 0x01, 0x00, 0x00, 0x00};
 static uint8_t CMD_GetDeviceInfo[]  = {0x30, 0x01, 0x01, 0x00};
 static uint8_t CMD_GetDeviceId[]  = {0x30, 0x02, 0x01, 0x14};
 static uint8_t tcm_answer[200] ={0};
+static uint8_t full_update_ticks = 0;
 
 /**
  * @brief Initialise the connections to the TCM module
@@ -86,10 +89,19 @@ uint8_t TCM_DisplayUpdate(void)
 	
 	for(i=0;i<25;i++){}
 	
+    full_update_ticks = (full_update_ticks+ 1) & 0x3 ;
+        
 	//Send display commands
-	spi_send_recv(display_update , tcm_answer , 5 , 5);
-
-		//TODO: check SPI txrx error
+    if(full_update_ticks == 0x3)
+    {
+        spi_send_recv(full_update , tcm_answer , 5 , 5);
+    }
+    else
+    {
+        spi_send_recv(flashless_update , tcm_answer , 5 , 5);
+    }
+		
+    //TODO: check SPI txrx error
 		
 	return tcm_answer[0];
 }
