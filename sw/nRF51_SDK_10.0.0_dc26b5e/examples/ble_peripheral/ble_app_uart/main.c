@@ -132,7 +132,7 @@ static void gap_params_init(void)
 /**@snippet [Handling the data received over BLE] */
 static void nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
 {
-    tcm__app_run(p_nus, p_data, length);
+    tcm__app_run(p_data, length);
     
 }
 /**@snippet [Handling the data received over BLE] */
@@ -526,7 +526,7 @@ int main(void)
     advertising_init();
     conn_params_init();
     
-    tcm__app_init();
+    tcm__app_init(&m_nus);
     
     printf("%s",start_string);
 

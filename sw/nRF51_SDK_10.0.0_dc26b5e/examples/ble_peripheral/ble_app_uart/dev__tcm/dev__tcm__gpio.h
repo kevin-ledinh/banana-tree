@@ -40,6 +40,8 @@
 ----------------------------------------------------------------------------*/
 void dev__tcm__gpio__init( void );
 
+void dev__tcm__btn__init( void (*forward) (void) , void (*backward) (void) );
+
 void dev__tcm__gpio__set_enable_pin_state( bool state );
 
 bool dev__tcm__gpio__is_busy( void );

@@ -44,6 +44,8 @@ typedef enum tcm__msg_type_e
 	MSG_TYPE_TX_IMAGE = 0,
 	MSG_TYPE_ACK,
 	MSG_FINISH_TX_IMAGE,
+	MSG_TYPE_FORWARD,
+	MSG_TYPE_BACKWARD,
 	MSG_TYPE_INVALID,
 	//LED_ON
 	//...

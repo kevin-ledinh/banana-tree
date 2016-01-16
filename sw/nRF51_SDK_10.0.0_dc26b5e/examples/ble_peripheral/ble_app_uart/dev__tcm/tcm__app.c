@@ -18,6 +18,7 @@
 #include "tcm__app.h"
 #include "TCM_api.h"
 #include "ble_nus.h"
+#include "dev__tcm__gpio.h"
 
 /*----------------------------------------------------------------------------
   manifest constants
@@ -38,7 +39,8 @@
 static void tcm__app_process_ble_data( uint8_t * data , uint8_t size );
 static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size);
 static void tcm__app_send_image_done_handler(ble_nus_t * p_nus);
-
+static void tcm__app_btn_forward( void );
+static void tcm__app_btn_backward( void );
 
 /*----------------------------------------------------------------------------
   global variables
@@ -52,7 +54,7 @@ static uint8_t tcm__app__msg_ack[5] = { 0x3E , 0x3E , 0x01 , 0x00 , 0x00 };
 static uint16_t epd_file_size = EPD_FILE_SIZE_441;
 static uint8_t upload_image[255] = { 0x20, 0x01, 0x00, 128 };
 static char * reply_tx_img_done = "done";
-
+static ble_nus_t * tcm__app_nus_ptr = NULL;
 /*----------------------------------------------------------------------------
   public functions
 ----------------------------------------------------------------------------*/
@@ -62,7 +64,7 @@ static char * reply_tx_img_done = "done";
 ------------------------------------------------------------------------------
 @note
 ============================================================================*/
-void tcm__app_init( void )
+void tcm__app_init( ble_nus_t * p_nus )
 {
 	//init SPI here
     //Initialise TCM board
@@ -71,6 +73,8 @@ void tcm__app_init( void )
     // return the TCM board's manufacture ID
     TCM__GetDeviceInfo();
     
+    dev__tcm__btn__init( tcm__app_btn_forward , tcm__app_btn_backward );
+    tcm__app_nus_ptr = p_nus;
 	tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
 	tcm__app.tcm__msg.payload = 0;
 	tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
@@ -83,7 +87,7 @@ void tcm__app_init( void )
 ------------------------------------------------------------------------------
 @note
 ============================================================================*/
-void tcm__app_run( ble_nus_t * p_nus, uint8_t * data , uint8_t size )
+void tcm__app_run( uint8_t * data , uint8_t size )
 {
     tcm__app_process_ble_data(data , size);
 	switch( tcm__app.tcm__app_event )
@@ -91,10 +95,10 @@ void tcm__app_run( ble_nus_t * p_nus, uint8_t * data , uint8_t size )
 		case TCM_EVENT_WAIT_FOR_CMD:
 			break;
 		case TCM_EVENT_TX_IMAGE:
-            tcm__app_send_image(p_nus, data , size);
+            tcm__app_send_image(tcm__app_nus_ptr, data , size);
             break;
 		case TCM_EVENT_FINISH_TX_IMAGE:
-            tcm__app_send_image_done_handler(p_nus);
+            tcm__app_send_image_done_handler(tcm__app_nus_ptr);
 			break;
 		default:
 			tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
@@ -103,6 +107,26 @@ void tcm__app_run( ble_nus_t * p_nus, uint8_t * data , uint8_t size )
 			break;
 	}
 }
+/*============================================================================
+@brief send forward button press
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+void tcm__app_btn_forward( void )
+{
+    printf("MSG_TYPE_FORWARD\r\n");
+}
+
+/*============================================================================
+@brief send backward button press
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+void tcm__app_btn_backward( void )
+{
+    printf("MSG_TYPE_BACKWARD\r\n");
+}
+
 /*----------------------------------------------------------------------------
   private functions
 ----------------------------------------------------------------------------*/
