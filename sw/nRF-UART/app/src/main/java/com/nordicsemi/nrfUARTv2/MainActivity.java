@@ -262,7 +262,38 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                  runOnUiThread(new Runnable() {
                      public void run() {
                          try {
-                         	String text = new String(txValue, "UTF-8");
+
+                             String text = new String("Unrecognized value");
+                             if(txValue.length <= 20)
+                             {
+                                 int msg_start = ( txValue[1] << 8 ) | txValue[0];
+                                 if( msg_start == 0x3E3E )
+                                 {
+                                     switch( txValue[2] )
+                                     {
+                                         case 0x00: //MSG_TYPE_TX_IMAGE
+                                             text = "MSG_TYPE_TX_IMAGE Rx";
+                                             break;
+                                         case 0x01: //MSG_TYPE_ACK
+                                             text = "MSG_TYPE_ACK Rx";
+                                             break;
+                                         case 0x02: // MSG_FINISH_TX_IMAGE
+                                             text = "MSG_FINISH_TX_IMAGE Rx";
+                                             break;
+                                         case 0x03: // MSG_TYPE_FORWARD
+                                             text = "MSG_TYPE_FORWARD Rx";
+                                             break;
+                                         case 0x04: // MSG_TYPE_BACKWARD
+                                             text = "MSG_TYPE_BACKWARD Rx";
+                                             break;
+                                         default:
+                                             // silently ignore
+                                             break;
+                                     }
+                                 }
+                             }
+
+
                          	String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
                         	 	listAdapter.add("["+currentDateTimeString+"] RX: "+text);
                         	 	messageListView.smoothScrollToPosition(listAdapter.getCount() - 1);
