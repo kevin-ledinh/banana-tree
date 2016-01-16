@@ -378,7 +378,7 @@ public class UartService extends Service {
                 temp[j] = value[i];
             }
             if((i == msgSize) && (j != 1)) {
-                RxChar.setValue(Arrays.copyOfRange(value,0,j));
+                RxChar.setValue(Arrays.copyOfRange(temp,0,j));
                 writeOk = false;
                 status = mBluetoothGatt.writeCharacteristic(RxChar);
                 while(writeOk == false);

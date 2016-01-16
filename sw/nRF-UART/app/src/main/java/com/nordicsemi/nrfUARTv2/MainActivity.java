@@ -282,9 +282,33 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                                              break;
                                          case 0x03: // MSG_TYPE_FORWARD
                                              text = "MSG_TYPE_FORWARD Rx";
+
+                                             picNumber = (picNumber + 1) & 1;
+                                             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
+                                             if(picNumber == 0) {
+                                                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
+                                             }
+                                             else
+                                             {
+                                                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
+                                             }
+                                             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
+
                                              break;
                                          case 0x04: // MSG_TYPE_BACKWARD
                                              text = "MSG_TYPE_BACKWARD Rx";
+
+                                             picNumber = (picNumber - 1) & 1;
+                                             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
+                                             if(picNumber == 0) {
+                                                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
+                                             }
+                                             else
+                                             {
+                                                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
+                                             }
+                                             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
+
                                              break;
                                          default:
                                              // silently ignore
