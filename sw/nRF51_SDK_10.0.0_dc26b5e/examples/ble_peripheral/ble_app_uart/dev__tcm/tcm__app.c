@@ -51,6 +51,8 @@ static void tcm__app_btn_backward( void );
 ----------------------------------------------------------------------------*/
 static tcm__app_t tcm__app;
 static uint8_t tcm__app__msg_ack[5] = { 0x3E , 0x3E , 0x01 , 0x00 , 0x00 };
+static uint8_t tcm__app__msg_forward[5] = { 0x3E , 0x3E , 0x03 , 0x00 , 0x00 };
+static uint8_t tcm__app__msg_backward[5] = { 0x3E , 0x3E , 0x04 , 0x00 , 0x00 };
 static uint16_t epd_file_size = EPD_FILE_SIZE_441;
 static uint8_t upload_image[255] = { 0x20, 0x01, 0x00, 128 };
 static char * reply_tx_img_done = "done";
@@ -115,6 +117,9 @@ void tcm__app_run( uint8_t * data , uint8_t size )
 void tcm__app_btn_forward( void )
 {
     printf("MSG_TYPE_FORWARD\r\n");
+    
+    ble_nus_string_send(tcm__app_nus_ptr , tcm__app__msg_forward , sizeof(tcm__app__msg_forward));
+
 }
 
 /*============================================================================
@@ -125,6 +130,9 @@ void tcm__app_btn_forward( void )
 void tcm__app_btn_backward( void )
 {
     printf("MSG_TYPE_BACKWARD\r\n");
+    
+    ble_nus_string_send(tcm__app_nus_ptr , tcm__app__msg_backward , sizeof(tcm__app__msg_backward));
+
 }
 
 /*----------------------------------------------------------------------------
@@ -204,7 +212,7 @@ static void tcm__app_send_image_done_handler(ble_nus_t * p_nus)
     tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
     tcm__app.tcm__msg.payload = 0;
     tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
-    ble_nus_string_send(p_nus , (uint8_t *)reply_tx_img_done , strlen(reply_tx_img_done));
+    ble_nus_string_send(p_nus , tcm__app__msg_ack , sizeof(tcm__app__msg_ack));
 }
 /*----------------------------------------------------------------------------
   End of file
