@@ -19,6 +19,7 @@
 #include "TCM_api.h"
 #include "ble_nus.h"
 #include "dev__tcm__gpio.h"
+#include "nrf_delay.h"
 
 /*----------------------------------------------------------------------------
   manifest constants
@@ -37,7 +38,7 @@
   prototypes
 ----------------------------------------------------------------------------*/
 static void tcm__app_process_ble_data( uint8_t * data , uint8_t size );
-static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size);
+static void tcm__app_send_image(uint8_t * data , uint8_t size);
 static void tcm__app_send_image_done_handler(ble_nus_t * p_nus);
 static void tcm__app_btn_forward( void );
 static void tcm__app_btn_backward( void );
@@ -96,8 +97,12 @@ void tcm__app_run( uint8_t * data , uint8_t size )
 	{
 		case TCM_EVENT_WAIT_FOR_CMD:
 			break;
+		case TCM_EVENT_WAIT_FOR_IMG:
+            tcm__app.tcm__app_event = TCM_EVENT_TX_IMAGE;
+            TCM_enable();
+			break;
 		case TCM_EVENT_TX_IMAGE:
-            tcm__app_send_image(tcm__app_nus_ptr, data , size);
+            tcm__app_send_image(data , size);
             break;
 		case TCM_EVENT_FINISH_TX_IMAGE:
             tcm__app_send_image_done_handler(tcm__app_nus_ptr);
@@ -156,7 +161,7 @@ static void tcm__app_process_ble_data( uint8_t * data , uint8_t size )
 				case MSG_TYPE_TX_IMAGE:
                     printf("MSG_TYPE_TX_IMAGE\r\n");
 					tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_TX_IMAGE;
-					tcm__app.tcm__app_event = TCM_EVENT_TX_IMAGE;
+					tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_IMG;
 					break;
 				case MSG_FINISH_TX_IMAGE:
                     printf("MSG_FINISH_TX_IMAGE\r\n");
@@ -181,20 +186,16 @@ static void tcm__app_process_ble_data( uint8_t * data , uint8_t size )
 ------------------------------------------------------------------------------
 @note
 ============================================================================*/
-static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size)
+static void tcm__app_send_image(uint8_t * data , uint8_t size)
 {
-    //        for (uint32_t i = 0; i < length; i++)
-//        {
-//            while(app_uart_put(p_data[i]) != NRF_SUCCESS);
-//        }
-    //while(app_uart_put('\n') != NRF_SUCCESS);
+
     uint8_t tcm_receive;
     
     for (uint32_t i = 0; i < size; i++)
     {
         upload_image[i + 4] = data[i];
     }
-    
+    //printf("tcm__app.img_data_size = %d - size: %d\r\n", tcm__app.img_data_size , size);
     tcm__app.img_data_size -= size;
     upload_image[3] = size;
     tcm_receive = TCM_ImageUpload(upload_image, size+4);
@@ -207,12 +208,22 @@ static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size
 ============================================================================*/
 static void tcm__app_send_image_done_handler(ble_nus_t * p_nus)
 {
+    uint8_t tcm_receive;
     tcm__app.img_data_size = EPD_FILE_SIZE_441;
     TCM_DisplayUpdate();
     tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
     tcm__app.tcm__msg.payload = 0;
     tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
     ble_nus_string_send(p_nus , tcm__app__msg_ack , sizeof(tcm__app__msg_ack));
+    
+    (void)nrf_delay_ms(1);
+    checkBusy(); 			// Check Busy pin to low
+    (void)nrf_delay_ms(1);
+    checkBusytoHigh();		// Check Busy pin to 
+    (void)nrf_delay_ms(1);
+    tcm_receive = TCM_GetAnswer();
+    	
+	TCM_disable();
 }
 /*----------------------------------------------------------------------------
   End of file

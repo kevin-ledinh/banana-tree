@@ -74,7 +74,7 @@ void TCM__GetDeviceInfo( void )
 	spi_send_recv(reply , tcm_answer , 64 , 64);
     
     printf("TCM dev info: %s\r\n",tcm_answer);
-	//TCM_disable();
+	TCM_disable();
 }
 
 /**
@@ -98,7 +98,7 @@ uint8_t TCM_DisplayUpdate(void)
     }
     else
     {
-        spi_send_recv(flashless_update , tcm_answer , 5 , 5);
+        spi_send_recv(flashless_inverted_update , tcm_answer , 5 , 5);
     }
 		
     //TODO: check SPI txrx error
@@ -123,7 +123,7 @@ uint8_t TCM_ImageUpload(uint8_t *upload_image_ptr, uint8_t image_size)
 	//Send image block
 	spi_send_recv(upload_image_ptr , tcm_answer , image_size , image_size);
 
-		//TODO: check SPI txrx error
+	//TODO: check SPI txrx error
 		
 	return tcm_answer[0];
 }

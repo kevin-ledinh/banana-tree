@@ -33,6 +33,7 @@ typedef enum tcm__app_event_e
 {
 	TCM_EVENT_WAIT_FOR_CMD = 0,
 	
+	TCM_EVENT_WAIT_FOR_IMG,
 	TCM_EVENT_TX_IMAGE,
 	TCM_EVENT_FINISH_TX_IMAGE,
 	

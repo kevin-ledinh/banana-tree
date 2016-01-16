@@ -133,7 +133,11 @@ static void gap_params_init(void)
 static void nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
 {
     tcm__app_run(p_data, length);
-    
+//    for (uint32_t i = 0; i < length; i++)
+//    {
+//        while(app_uart_put(p_data[i]) != NRF_SUCCESS);
+//    }
+    //while(app_uart_put('\n') != NRF_SUCCESS);
 }
 /**@snippet [Handling the data received over BLE] */
 
