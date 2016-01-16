@@ -91,6 +91,7 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private EditText edtMessage;
     private SamplePic mSamplePic;
     private int picNumber;
+    private byte [] txImageCmd = {0x3E , 0x3E , 0x00};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,45 +147,25 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             	EditText editText = (EditText) findViewById(R.id.sendText);
             	String message = editText.getText().toString();
             	byte[] value = new byte[20];
-//                byte[] value;
+                String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+                mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);
+                listAdapter.add("["+currentDateTimeString+"] TX: sending picture");
+                
 				try {
 					//send data to service
-//					value = message.getBytes("UTF-8");
-//					mService.writeRXCharacteristic(value);
-                    int i, j;
-                    for(i = 0, j = 0; i < mSamplePic.GetPic1Size(); i++, j++)
-                    {
-                        if(j == 19)
-                        {
-                            if(picNumber == 0) {
-                                value[j] = mSamplePic.GetPic1()[i];
-                            }
-                            else
-                            {
-                                value[j] = mSamplePic.GetPic2()[i];
-                            }
-
-                            mService.writeRXCharacteristic(value);
-                            j = 0;
-                            i++;
-//                            Log.d(TAG, "write TXchar - status=");
-                        }
-                        if(picNumber == 0) {
-                            value[j] = mSamplePic.GetPic1()[i];
-                        }
-                        else
-                        {
-                            value[j] = mSamplePic.GetPic2()[i];
-                        }
+//
+                    if(picNumber == 0) {
+                        mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
                     }
-                    if((i == mSamplePic.GetPic1Size()) && (j != 1)) {
-                        mService.writeRXCharacteristic(Arrays.copyOfRange(value,0,j));
+                    else
+                    {
+                        mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
                     }
                     picNumber = (picNumber + 1) & 1;
 
 					//Update the log with time stamp
-					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-					listAdapter.add("["+currentDateTimeString+"] TX: pic1");
+					currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+					listAdapter.add("["+currentDateTimeString+"] TX: picture sent");
                	 	messageListView.smoothScrollToPosition(listAdapter.getCount() - 1);
                	 	edtMessage.setText("");
 				} catch (Exception e) {
