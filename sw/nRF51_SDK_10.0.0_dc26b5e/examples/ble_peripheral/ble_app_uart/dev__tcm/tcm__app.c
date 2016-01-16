@@ -1,0 +1,187 @@
+/*============================================================================
+@brief A C source for tcm application layer
+------------------------------------------------------------------------------
+<!-- Written by Kevin Le Dinh -->
+<!-- Copyright (C) 2016 All rights reserved -->
+============================================================================*/
+
+/*----------------------------------------------------------------------------
+  @brief
+----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------
+  include files
+----------------------------------------------------------------------------*/
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "tcm__app.h"
+#include "TCM_api.h"
+#include "ble_nus.h"
+
+/*----------------------------------------------------------------------------
+  manifest constants
+----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------
+  type definitions
+----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------
+  macros
+----------------------------------------------------------------------------*/
+#define EPD_FILE_SIZE_441               15016
+
+/*----------------------------------------------------------------------------
+  prototypes
+----------------------------------------------------------------------------*/
+static void tcm__app_process_ble_data( uint8_t * data , uint8_t size );
+static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size);
+static void tcm__app_send_image_done_handler(ble_nus_t * p_nus);
+
+
+/*----------------------------------------------------------------------------
+  global variables
+----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------
+  static variables
+----------------------------------------------------------------------------*/
+static tcm__app_t tcm__app;
+static uint8_t tcm__app__msg_ack[5] = { 0x3E , 0x3E , 0x01 , 0x00 , 0x00 };
+static uint16_t epd_file_size = EPD_FILE_SIZE_441;
+static uint8_t upload_image[255] = { 0x20, 0x01, 0x00, 128 };
+static char * reply_tx_img_done = "done";
+
+/*----------------------------------------------------------------------------
+  public functions
+----------------------------------------------------------------------------*/
+
+/*============================================================================
+@brief
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+void tcm__app_init( void )
+{
+	//init SPI here
+    //Initialise TCM board
+    TCM__init();
+
+    // return the TCM board's manufacture ID
+    TCM__GetDeviceInfo();
+    
+	tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
+	tcm__app.tcm__msg.payload = 0;
+	tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
+    tcm__app.img_data_size = EPD_FILE_SIZE_441;
+}
+
+
+/*============================================================================
+@brief FSM for the TCM application
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+void tcm__app_run( ble_nus_t * p_nus, uint8_t * data , uint8_t size )
+{
+    tcm__app_process_ble_data(data , size);
+	switch( tcm__app.tcm__app_event )
+	{
+		case TCM_EVENT_WAIT_FOR_CMD:
+			break;
+		case TCM_EVENT_TX_IMAGE:
+            tcm__app_send_image(p_nus, data , size);
+            break;
+		case TCM_EVENT_FINISH_TX_IMAGE:
+            tcm__app_send_image_done_handler(p_nus);
+			break;
+		default:
+			tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
+			tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
+			tcm__app.tcm__msg.payload = 0;
+			break;
+	}
+}
+/*----------------------------------------------------------------------------
+  private functions
+----------------------------------------------------------------------------*/
+
+/*============================================================================
+@brief
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+static void tcm__app_process_ble_data( uint8_t * data , uint8_t size )
+{
+	if(size <= 20)
+	{
+		uint16_t msg_start = ( data[1] << 8 ) | data[0];
+		if( msg_start == 0x3E3E )
+		{
+			switch( (tcm__msg_type_t) data[2] )
+			{
+				case MSG_TYPE_TX_IMAGE:
+                    printf("MSG_TYPE_TX_IMAGE\r\n");
+					tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_TX_IMAGE;
+					tcm__app.tcm__app_event = TCM_EVENT_TX_IMAGE;
+					break;
+				case MSG_FINISH_TX_IMAGE:
+                    printf("MSG_FINISH_TX_IMAGE\r\n");
+					tcm__app.tcm__msg.tcm__msg_type = MSG_FINISH_TX_IMAGE;
+					tcm__app.tcm__app_event = TCM_EVENT_FINISH_TX_IMAGE;
+					break;
+				case MSG_TYPE_ACK:
+                    printf("MSG_TYPE_ACK\r\n");
+					tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_ACK;
+					tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
+					break;
+				default:
+                    // silently ignore
+					break;
+			}
+        }
+	}
+}
+
+/*============================================================================
+@brief
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+static void tcm__app_send_image(ble_nus_t * p_nus, uint8_t * data , uint8_t size)
+{
+    //        for (uint32_t i = 0; i < length; i++)
+//        {
+//            while(app_uart_put(p_data[i]) != NRF_SUCCESS);
+//        }
+    //while(app_uart_put('\n') != NRF_SUCCESS);
+    uint8_t tcm_receive;
+    
+    for (uint32_t i = 0; i < size; i++)
+    {
+        upload_image[i + 4] = data[i];
+    }
+    
+    tcm__app.img_data_size -= size;
+    upload_image[3] = size;
+    tcm_receive = TCM_ImageUpload(upload_image, size+4);
+}
+
+/*============================================================================
+@brief
+------------------------------------------------------------------------------
+@note
+============================================================================*/
+static void tcm__app_send_image_done_handler(ble_nus_t * p_nus)
+{
+    tcm__app.img_data_size = EPD_FILE_SIZE_441;
+    TCM_DisplayUpdate();
+    tcm__app.tcm__msg.tcm__msg_type = MSG_TYPE_INVALID;
+    tcm__app.tcm__msg.payload = 0;
+    tcm__app.tcm__app_event = TCM_EVENT_WAIT_FOR_CMD;
+    ble_nus_string_send(p_nus , (uint8_t *)reply_tx_img_done , strlen(reply_tx_img_done));
+}
+/*----------------------------------------------------------------------------
+  End of file
+----------------------------------------------------------------------------*/
