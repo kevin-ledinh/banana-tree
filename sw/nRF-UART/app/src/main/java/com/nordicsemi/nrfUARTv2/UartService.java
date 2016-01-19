@@ -384,6 +384,7 @@ public class UartService extends Service {
                 while(writeOk == false);
             }
 //            while (mBluetoothGatt.writeCharacteristic(RxChar) == false) ;
+            Log.d(TAG, "Total bytes = " + i);
         }
         Log.d(TAG, "write TXchar - status=" + status);
     }

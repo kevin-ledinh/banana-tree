@@ -91,8 +91,8 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private EditText edtMessage;
     private SamplePic mSamplePic;
     private int picNumber;
-    private byte [] txImageCmd = {0x3E , 0x3E , 0x00};
-    private byte [] txImageDoneCmd = {0x3E , 0x3E , 0x02};
+    private byte [] txImageCmd = {0x25 , 0x25 , 0x00};
+    private byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,21 +149,10 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             	String message = editText.getText().toString();
             	byte[] value = new byte[20];
                 String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-                mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
                 listAdapter.add("["+currentDateTimeString+"] TX: sending picture");
 
 				try {
-					//send data to service
-                    if(picNumber == 0) {
-                        mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
-                    }
-                    else
-                    {
-                        mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
-                    }
-                    picNumber = (picNumber + 1) & 1;
-                    mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
-
+                    updateAndSendSamplePic();
 					//Update the log with time stamp
 					currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
 					listAdapter.add("["+currentDateTimeString+"] TX: picture sent");
@@ -207,6 +196,25 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
   
         }
     };
+    private void updateAndSendSamplePic(){
+        try {
+//            picNumber = 1;
+            picNumber = (picNumber + 1) & 1;
+            mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
+            Thread.sleep(50);
+            if(picNumber == 0) {
+                mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
+            }
+            else
+            {
+                mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
+            }
+            mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
 
@@ -276,39 +284,23 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                                              break;
                                          case 0x01: //MSG_TYPE_ACK
                                              text = "MSG_TYPE_ACK Rx";
+                                             if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
+                                                 text += ": missing data chunk";
+                                                 updateAndSendSamplePic();
+                                             } else {
+                                                 text += ": no error";
+                                             }
                                              break;
                                          case 0x02: // MSG_FINISH_TX_IMAGE
                                              text = "MSG_FINISH_TX_IMAGE Rx";
                                              break;
                                          case 0x03: // MSG_TYPE_FORWARD
                                              text = "MSG_TYPE_FORWARD Rx";
-
-                                             picNumber = (picNumber + 1) & 1;
-                                             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
-                                             if(picNumber == 0) {
-                                                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
-                                             }
-                                             else
-                                             {
-                                                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
-                                             }
-                                             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
-
+                                             updateAndSendSamplePic();
                                              break;
                                          case 0x04: // MSG_TYPE_BACKWARD
                                              text = "MSG_TYPE_BACKWARD Rx";
-
-                                             picNumber = (picNumber - 1) & 1;
-                                             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
-                                             if(picNumber == 0) {
-                                                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
-                                             }
-                                             else
-                                             {
-                                                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
-                                             }
-                                             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
-
+                                             updateAndSendSamplePic();
                                              break;
                                          default:
                                              // silently ignore
