@@ -31,8 +31,8 @@
 ----------------------------------------------------------------------------*/
 #define TCM_nBUSY 	    ARDUINO_A4_PIN  // INPUT P0.05
 #define TCM_nEN 		ARDUINO_A5_PIN  // OUTPUT P0.06
-#define BTN_FORWARD 	BUTTON_1  // 
-#define BTN_BACKWARD 	BUTTON_2  // 
+#define BTN_FORWARD 	BUTTON_3  // 
+#define BTN_BACKWARD 	BUTTON_4  // 
 
 /*----------------------------------------------------------------------------
   prototypes
