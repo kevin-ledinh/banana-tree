@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
+<eagle version="6.4">
+<drawing>
+<settings>
+<setting alwaysvectorfont="no"/>
+<setting verticaltext="up"/>
+</settings>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="yes" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="yes" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="yes" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="yes" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="100" name="Muster" color="7" fill="1" visible="no" active="no"/>
+<layer number="101" name="Patch_Top" color="12" fill="4" visible="yes" active="yes"/>
+<layer number="102" name="Vscore" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="103" name="tMap" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="104" name="Name" color="16" fill="1" visible="yes" active="yes"/>
+<layer number="105" name="tPlate" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="106" name="bPlate" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="107" name="Crop" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="116" name="Patch_BOT" color="9" fill="4" visible="yes" active="yes"/>
+<layer number="121" name="_tsilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="122" name="_bsilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="200" name="200bmp" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="201" name="201bmp" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="202" name="202bmp" color="3" fill="10" visible="yes" active="yes"/>
+<layer number="203" name="203bmp" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="204" name="204bmp" color="5" fill="10" visible="yes" active="yes"/>
+<layer number="205" name="205bmp" color="6" fill="10" visible="yes" active="yes"/>
+<layer number="206" name="206bmp" color="7" fill="10" visible="yes" active="yes"/>
+<layer number="207" name="207bmp" color="8" fill="10" visible="yes" active="yes"/>
+<layer number="208" name="208bmp" color="9" fill="10" visible="yes" active="yes"/>
+<layer number="209" name="209bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="210" name="210bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="211" name="211bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="212" name="212bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="213" name="213bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="214" name="214bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="215" name="215bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="216" name="216bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
+<layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
+</layers>
+<library>
+<packages>
+<package name="FCI_SD-SOCKET">
+<description>FCI SD Card Reader 10067847</description>
+</package>
+<package name="SD-MMC_SOCKET-PP">
+<description>FCI SD SOCKET</description>
+<wire x1="-14" y1="0" x2="-14" y2="29" width="0.2032" layer="21"/>
+<wire x1="10.645" y1="29" x2="14.9" y2="29" width="0.2032" layer="21"/>
+<wire x1="14.9" y1="29" x2="14.9" y2="0" width="0.2032" layer="21"/>
+<wire x1="-14" y1="0" x2="-10.15" y2="0" width="0.2032" layer="21"/>
+<wire x1="9.77" y1="0" x2="14.9" y2="0" width="0.2032" layer="21"/>
+<wire x1="-10.15" y1="0" x2="9.77" y2="0" width="0.2032" layer="21" curve="-176.563284"/>
+<wire x1="-12.215" y1="29" x2="-10.5" y2="29" width="0.2032" layer="21"/>
+<smd name="SHLD1" x="-13.6" y="7.4" dx="1.2" dy="2.2" layer="1"/>
+<smd name="SHLD2" x="14.4" y="8.6" dx="1.2" dy="2.2" layer="1"/>
+<smd name="WP" x="-13.125" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="CD" x="2.725" y="29.6" dx="1" dy="1.5" layer="1" rot="R180"/>
+<smd name="14" x="-14" y="16.65" dx="1.4" dy="6.3" layer="1"/>
+<smd name="SW" x="-9.775" y="21.2" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="8" x="-9.775" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="7" x="-8.075" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="6" x="-5.625" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="5" x="-3.125" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="4" x="-0.625" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="3" x="1.075" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="2" x="4.375" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="1" x="6.875" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="9" x="9.375" y="29.6" dx="1" dy="1.5" layer="1"/>
+<smd name="SW1" x="-8.075" y="21.2" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="SW2" x="-5.625" y="21.2" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="SW3" x="-3.125" y="21.2" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="SW4" x="-0.625" y="20.8" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="SW5" x="1.95" y="21.1" dx="1.9" dy="2.5" layer="1" rot="R180"/>
+<smd name="SW6" x="4.375" y="21.2" dx="1.1" dy="2" layer="1" rot="R180"/>
+<smd name="SW7" x="6.875" y="21.65" dx="1.1" dy="2.5" layer="1" rot="R180"/>
+<smd name="SW8" x="9.375" y="19.5" dx="1.1" dy="2" layer="1" rot="R180"/>
+<text x="14.27" y="16.86" size="1.27" layer="25" rot="R90">FCI 10067847</text>
+<hole x="-12.1" y="5.3" drill="1.5"/>
+<hole x="12" y="5.3" drill="1.5"/>
+<text x="-20.32" y="24.13" size="1.27" layer="25">&gt;NAME</text>
+</package>
+</packages>
+<symbols>
+<symbol name="FCI_SD_SOCKET">
+<wire x1="-10.16" y1="30.48" x2="10.16" y2="30.48" width="0.254" layer="94"/>
+<wire x1="10.16" y1="30.48" x2="10.16" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-10.16" x2="-10.16" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="-10.16" x2="-10.16" y2="30.48" width="0.254" layer="94"/>
+<pin name="CS,PIN1" x="-15.24" y="25.4" length="middle"/>
+<pin name="DI,PIN2" x="-15.24" y="22.86" length="middle"/>
+<pin name="GND,PIN3" x="-15.24" y="20.32" length="middle"/>
+<pin name="VCC,PIN4" x="-15.24" y="17.78" length="middle"/>
+<pin name="SCK,PIN5" x="-15.24" y="15.24" length="middle"/>
+<pin name="GND1,PIN6" x="-15.24" y="12.7" length="middle"/>
+<pin name="DO,PIN7" x="-15.24" y="10.16" length="middle"/>
+<pin name="IR1Q,PIN8" x="-15.24" y="7.62" length="middle"/>
+<pin name="PIN9" x="-15.24" y="5.08" length="middle"/>
+<pin name="WP" x="-15.24" y="2.54" length="middle"/>
+<pin name="CD" x="-15.24" y="0" length="middle"/>
+<pin name="SHLD_GND1" x="-15.24" y="-2.54" length="middle"/>
+<pin name="SHLD_GND2" x="-15.24" y="-5.08" length="middle"/>
+<text x="-4.572" y="31.496" size="1.778" layer="95">&gt;NAME</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="FCI_SD_SOCKET" uservalue="yes">
+<description>FCI Memory Card Connector (SD card)</description>
+<gates>
+<gate name="G$1" symbol="FCI_SD_SOCKET" x="-25.4" y="38.1"/>
+</gates>
+<devices>
+<device name="" package="SD-MMC_SOCKET-PP">
+<connects>
+<connect gate="G$1" pin="CD" pad="CD"/>
+<connect gate="G$1" pin="CS,PIN1" pad="1"/>
+<connect gate="G$1" pin="DI,PIN2" pad="2"/>
+<connect gate="G$1" pin="DO,PIN7" pad="7"/>
+<connect gate="G$1" pin="GND,PIN3" pad="3"/>
+<connect gate="G$1" pin="GND1,PIN6" pad="6"/>
+<connect gate="G$1" pin="IR1Q,PIN8" pad="8"/>
+<connect gate="G$1" pin="PIN9" pad="9"/>
+<connect gate="G$1" pin="SCK,PIN5" pad="5"/>
+<connect gate="G$1" pin="SHLD_GND1" pad="SHLD1"/>
+<connect gate="G$1" pin="SHLD_GND2" pad="SHLD2"/>
+<connect gate="G$1" pin="VCC,PIN4" pad="4"/>
+<connect gate="G$1" pin="WP" pad="WP"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="MF" value="FCI" constant="no"/>
+<attribute name="MOUSER" value="649-10067847-001RLF" constant="no"/>
+<attribute name="MPN" value="10067847-001RLF" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+</drawing>
+</eagle>
