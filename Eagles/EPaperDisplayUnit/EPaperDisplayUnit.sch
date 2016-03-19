@@ -24564,8 +24564,8 @@ Default: Crystal</text>
 <instance part="C5" gate="G$1" x="312.42" y="76.2"/>
 <instance part="SUPPLY11" gate="GND" x="327.66" y="119.38"/>
 <instance part="C8" gate="G$1" x="350.52" y="121.92" rot="R270"/>
-<instance part="D5" gate="G$1" x="114.3" y="246.38"/>
-<instance part="SUPPLY13" gate="GND" x="124.46" y="246.38" rot="R90"/>
+<instance part="D5" gate="G$1" x="248.92" y="139.7" rot="R270"/>
+<instance part="SUPPLY13" gate="GND" x="248.92" y="127"/>
 <instance part="C10" gate="G$1" x="365.76" y="132.08" rot="R90"/>
 <instance part="C11" gate="G$1" x="355.6" y="137.16" rot="R90"/>
 <instance part="C12" gate="G$1" x="347.98" y="142.24" rot="R90"/>
@@ -24785,7 +24785,7 @@ Default: Crystal</text>
 <segment>
 <pinref part="D5" gate="G$1" pin="C"/>
 <pinref part="SUPPLY13" gate="GND" pin="GND"/>
-<wire x1="116.84" y1="246.38" x2="121.92" y2="246.38" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="137.16" x2="248.92" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="SUPPLY14" gate="GND" pin="GND"/>
@@ -25296,9 +25296,9 @@ Default: Crystal</text>
 <wire x1="345.44" y1="68.58" x2="345.44" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="246.38" x2="111.76" y2="246.38" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="147.32" x2="248.92" y2="142.24" width="0.1524" layer="91"/>
 <pinref part="D5" gate="G$1" pin="A"/>
-<label x="111.76" y="246.38" size="1.778" layer="95" rot="R90"/>
+<label x="248.92" y="147.32" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="X2" gate="-6" pin="1"/>
