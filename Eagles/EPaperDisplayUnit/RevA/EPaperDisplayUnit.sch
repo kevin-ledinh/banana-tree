@@ -24248,7 +24248,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="U$5" library="adafruit" deviceset="EVQQ2" device=""/>
 <part name="U$12" library="adafruit" deviceset="EVQQ2" device=""/>
 <part name="C3" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
-<part name="R3" library="resistor" deviceset="R-EU_" device="R0402" value="470"/>
+<part name="R3" library="resistor" deviceset="R-EU_" device="R0402" value="10k"/>
 <part name="VSYS2" library="supply1" deviceset="+3V3" device=""/>
 <part name="VSYS3" library="supply1" deviceset="+3V3" device=""/>
 </parts>
