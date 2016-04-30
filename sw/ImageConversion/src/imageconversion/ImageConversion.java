@@ -21,14 +21,20 @@ public class ImageConversion {
 		Wp = 400; Hp = 300;
 
 		try {
-			String key = "Sample";
+			String []key = { "OK that’s all. I hope i didn’t mess up",
+							 "anything and help you a bit. Feel free",
+							 "to ask and comment :) . So have a",
+							 "nice day. "};
 	        BufferedImage original = new BufferedImage(IMG_HEIGHT ,IMG_WIDTH , BufferedImage.TYPE_BYTE_INDEXED);
 	        Graphics2D graphics = (Graphics2D)original.getGraphics();
 	        graphics.setColor(Color.WHITE);
 	        graphics.fillRect(0, 0,IMG_HEIGHT  , IMG_WIDTH);
 	        graphics.setColor(Color.BLACK);
-	        graphics.setFont(new Font("Arial Black", Font.BOLD, 20));
-	        graphics.drawString(key, 10, 25);
+	        graphics.setFont(new Font("Arial Black", Font.PLAIN, 14));
+	        graphics.drawString(key[0], 10, 25);
+	        graphics.drawString(key[1], 10, 40);
+	        graphics.drawString(key[2], 10, 55);
+	        graphics.drawString(key[3], 10, 70);
 	        //rotate the picture here
 	        // Drawing the rotated image at the required drawing locations
 	        graphics.dispose();
