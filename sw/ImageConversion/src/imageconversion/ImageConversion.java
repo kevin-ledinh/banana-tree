@@ -2,6 +2,7 @@ package imageconversion;
 import static java.lang.System.out;
 import static java.nio.file.StandardOpenOption.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
@@ -21,16 +22,24 @@ public class ImageConversion {
 
 		try {
 			String key = "Sample";
-	        BufferedImage img = new BufferedImage(IMG_WIDTH, IMG_HEIGHT,
-	                BufferedImage.TYPE_INT_RGB);
-	        Graphics graphics = img.getGraphics();
-	        graphics.setColor(Color.LIGHT_GRAY);
-	        graphics.fillRect(0, 0, IMG_WIDTH, IMG_WIDTH);
+	        BufferedImage img = new BufferedImage(IMG_WIDTH ,IMG_HEIGHT , BufferedImage.TYPE_BYTE_INDEXED);
+	        Graphics2D graphics = (Graphics2D)img.getGraphics();
+	        graphics.setColor(Color.WHITE);
+	        graphics.fillRect(0, 0,IMG_WIDTH ,IMG_HEIGHT );
 	        graphics.setColor(Color.BLACK);
 	        graphics.setFont(new Font("Arial Black", Font.BOLD, 20));
 	        graphics.drawString(key, 10, 25);
+	        //rotate the picture here
+	        // Drawing the rotated image at the required drawing locations
 	        graphics.dispose();
 	        System.out.println("Image Created");
+//	        AffineTransform tx = new AffineTransform();
+//	        tx.rotate(Math.toRadians(90), IMG_HEIGHT / 2, IMG_WIDTH / 2);
+//	        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+//
+//	        img = op.filter(img, null);
+
+			out.printf("img.getWidth(): %d img.getHeight(): %d\r\n", img.getWidth(), img.getHeight() );
 	        
 			// Image conversion code snippet:
 		    // Convert to gray
