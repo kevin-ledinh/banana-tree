@@ -16,8 +16,7 @@ public class ConvertTools {
 	        return bi;
 	    }
 
-	    BufferedImage gray = new BufferedImage(bi.getWidth(), bi.getHeight(),
-	            BufferedImage.TYPE_BYTE_GRAY);
+	    BufferedImage gray = new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
 	    Graphics gr = gray.getGraphics();
 	    gr.drawImage(bi, 0, 0, null);
 	    gr.dispose();
