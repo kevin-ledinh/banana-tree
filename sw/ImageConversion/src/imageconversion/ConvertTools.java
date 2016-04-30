@@ -147,7 +147,7 @@ public class ConvertTools {
 		return newPicData;
 	}	
 	private static boolean isGray(BufferedImage img) {
-		boolean flag = false;
+		boolean flag = true;
 		int width = img.getWidth();
         int height = img.getHeight();
 
@@ -162,8 +162,11 @@ public class ConvertTools {
                 blue = (pixel) & 0xff;
 
                 //check if R=G=B
-                if (red != green || green != blue ) {
-                    flag = true;
+                if ((red != green) || 
+                	(green != blue) || 
+                	(red != blue)) 
+                {
+                    flag = false;
                     break;
                 }
 

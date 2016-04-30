@@ -1,5 +1,4 @@
-import static java.lang.System.out;
-import imageconversion.ConvertTools;
+package imageconversion;
 import java.awt.image.*;
 
 public class ImageConversion {
@@ -16,7 +15,8 @@ public class ImageConversion {
 		// Image conversion code snippet:
 	    // Convert to gray
 		//Read in the image
-		BufferedImage img = ConvertTools.downsampleTo8bitGrayScale(img);
+		BufferedImage img = new BufferedImage(100,100,100);
+		img = ConvertTools.downsampleTo8bitGrayScale(img);
 
 	    int [] rawIntPixelData = ConvertTools.toIntArray(img);
 
