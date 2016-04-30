@@ -22,10 +22,10 @@ public class ImageConversion {
 
 		try {
 			String key = "Sample";
-	        BufferedImage img = new BufferedImage(IMG_WIDTH ,IMG_HEIGHT , BufferedImage.TYPE_BYTE_INDEXED);
-	        Graphics2D graphics = (Graphics2D)img.getGraphics();
+	        BufferedImage original = new BufferedImage(IMG_HEIGHT ,IMG_WIDTH , BufferedImage.TYPE_BYTE_INDEXED);
+	        Graphics2D graphics = (Graphics2D)original.getGraphics();
 	        graphics.setColor(Color.WHITE);
-	        graphics.fillRect(0, 0,IMG_WIDTH ,IMG_HEIGHT );
+	        graphics.fillRect(0, 0,IMG_HEIGHT  , IMG_WIDTH);
 	        graphics.setColor(Color.BLACK);
 	        graphics.setFont(new Font("Arial Black", Font.BOLD, 20));
 	        graphics.drawString(key, 10, 25);
@@ -33,6 +33,9 @@ public class ImageConversion {
 	        // Drawing the rotated image at the required drawing locations
 	        graphics.dispose();
 	        System.out.println("Image Created");
+	        
+	        BufferedImage img = rotate90ToRight(original);
+	        
 //	        AffineTransform tx = new AffineTransform();
 //	        tx.rotate(Math.toRadians(90), IMG_HEIGHT / 2, IMG_WIDTH / 2);
 //	        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
@@ -72,7 +75,37 @@ public class ImageConversion {
 			out.println(e.toString());
 		}
 	}
+	public static BufferedImage rotate90ToLeft( BufferedImage inputImage ){
+		//The most of code is same as before
+			int width = inputImage.getWidth();
+			int height = inputImage.getHeight();
+			BufferedImage returnImage = new BufferedImage( height, width , inputImage.getType()  );
+		//We have to change the width and height because when you rotate the image by 90 degree, the
+		//width is height and height is width <img src='http://forum.codecall.net/public/style_emoticons/<#EMO_DIR#>/smile.png' class='bbc_emoticon' alt=':)' />
 
+			for( int x = 0; x < width; x++ ) {
+				for( int y = 0; y < height; y++ ) {
+					returnImage.setRGB(y, (width - x - 1), inputImage.getRGB( x, y  )  );
+		//Again check the Picture for better understanding
+				}
+				}
+			return returnImage;
+
+		}
+	
+	public static BufferedImage rotate90ToRight( BufferedImage inputImage ){
+		int width = inputImage.getWidth();
+		int height = inputImage.getHeight();
+		BufferedImage returnImage = new BufferedImage( height, width , inputImage.getType()  );
+
+		for( int x = 0; x < width; x++ ) {
+			for( int y = 0; y < height; y++ ) {
+				returnImage.setRGB( height - y -1, x, inputImage.getRGB( x, y  )  );
+	//Again check the Picture for better understanding
+			}
+		}
+		return returnImage;
+	}
 	private void ConvertSampleImage() {
 		byte [] imageHeader = { 0x33, 0x01, (byte)0x90, 0x01, 0x2C, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 		
