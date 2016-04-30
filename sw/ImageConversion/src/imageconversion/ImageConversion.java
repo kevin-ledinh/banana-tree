@@ -1,11 +1,14 @@
 package imageconversion;
 import static java.lang.System.out;
 import static java.nio.file.StandardOpenOption.*;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 
 public class ImageConversion {
@@ -21,32 +24,47 @@ public class ImageConversion {
 		Wp = 400; Hp = 300;
 
 		try {
-			String []key = { "OK that’s all. I hope i didn’t mess up",
-							 "anything and help you a bit. Feel free",
-							 "to ask and comment :) . So have a",
-							 "nice day. "};
-	        BufferedImage original = new BufferedImage(IMG_HEIGHT ,IMG_WIDTH , BufferedImage.TYPE_BYTE_INDEXED);
+
+			// Open the file
+			Path samplePage = Paths.get("./sample.txt");
+			FileInputStream fstream = new FileInputStream(samplePage.toString());
+			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+			StringBuffer stringBuffer = new StringBuffer();
+			String strLine;
+
+			//Read File Line By Line
+			while ((strLine = br.readLine()) != null)   {
+			  // Print the content on the console
+
+				stringBuffer.append(strLine);
+				stringBuffer.append("\n");
+			}
+
+			//Close the input stream
+			br.close();
+			
+			BufferedImage original = new BufferedImage(IMG_HEIGHT ,IMG_WIDTH , BufferedImage.TYPE_BYTE_INDEXED);
 	        Graphics2D graphics = (Graphics2D)original.getGraphics();
 	        graphics.setColor(Color.WHITE);
 	        graphics.fillRect(0, 0,IMG_HEIGHT  , IMG_WIDTH);
 	        graphics.setColor(Color.BLACK);
 	        graphics.setFont(new Font("Arial Black", Font.PLAIN, 14));
-	        graphics.drawString(key[0], 10, 25);
-	        graphics.drawString(key[1], 10, 40);
-	        graphics.drawString(key[2], 10, 55);
-	        graphics.drawString(key[3], 10, 70);
-	        //rotate the picture here
-	        // Drawing the rotated image at the required drawing locations
+	        
+	        FontMetrics fm = graphics.getFontMetrics();
+	        List<String> strings = WrapString.wrap(stringBuffer.toString(), fm, IMG_HEIGHT - 30);
+	        for (int i = 0; i < strings.size(); i++)
+	        {
+	        	graphics.drawString(strings.get(i), 10, (20 + fm.getHeight() * i) );
+	        }
+	        
 	        graphics.dispose();
 	        System.out.println("Image Created");
-	        
+
+	        //rotate the picture here
+	        // Drawing the rotated image at the required drawing locations
 	        BufferedImage img = rotate90ToRight(original);
 	        
-//	        AffineTransform tx = new AffineTransform();
-//	        tx.rotate(Math.toRadians(90), IMG_HEIGHT / 2, IMG_WIDTH / 2);
-//	        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-//
-//	        img = op.filter(img, null);
 
 			out.printf("img.getWidth(): %d img.getHeight(): %d\r\n", img.getWidth(), img.getHeight() );
 	        
