@@ -49,13 +49,15 @@ public class ImageConversion {
 	        graphics.setColor(Color.WHITE);
 	        graphics.fillRect(0, 0,IMG_HEIGHT  , IMG_WIDTH);
 	        graphics.setColor(Color.BLACK);
-	        graphics.setFont(new Font("Arial Black", Font.PLAIN, 14));
+	        graphics.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 	        
 	        FontMetrics fm = graphics.getFontMetrics();
+	        int characterHeight = fm.getHeight();
+	        int maxNoLines = ( IMG_WIDTH - 10 ) / characterHeight;
 	        List<String> strings = WrapString.wrap(stringBuffer.toString(), fm, IMG_HEIGHT - 30);
-	        for (int i = 0; i < strings.size(); i++)
+	        for (int i = 0; i < maxNoLines; i++)
 	        {
-	        	graphics.drawString(strings.get(i), 10, (20 + fm.getHeight() * i) );
+	        	graphics.drawString(strings.get(i), 10, (20 + characterHeight * i) );
 	        }
 	        
 	        graphics.dispose();
