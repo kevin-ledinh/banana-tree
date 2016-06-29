@@ -49,6 +49,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -167,7 +169,9 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         });
      
         // Set initial UI state
-        
+        ImageConversion imageConversion = new ImageConversion();
+        Bitmap originalImg = BitmapFactory.decodeResource(getResources(), R.raw.samplepic1);
+        imageConversion.run(originalImg);
     }
 
     //UART service connected/disconnected
