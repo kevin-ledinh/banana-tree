@@ -95,6 +95,8 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private int picNumber;
     private byte [] txImageCmd = {0x25 , 0x25 , 0x00};
     private byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
+    private byte [] sampleImage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,9 +171,6 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         });
      
         // Set initial UI state
-        ImageConversion imageConversion = new ImageConversion();
-        Bitmap originalImg = BitmapFactory.decodeResource(getResources(), R.raw.samplepic1);
-        imageConversion.run(originalImg);
     }
 
     //UART service connected/disconnected
@@ -203,15 +202,16 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     private void updateAndSendSamplePic(){
         try {
 //            picNumber = 1;
-            picNumber = (picNumber + 1) & 1;
+            picNumber = (picNumber + 1);
             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
             Thread.sleep(50);
-            if(picNumber == 0) {
+            if(picNumber == 1) {
                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
-            }
-            else
-            {
+            } else if(picNumber == 2) {
                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
+            } else {
+                mService.writeRXCharacteristic(mSamplePic.GetPic3(), mSamplePic.GetPic3Size());
+                picNumber = 0;
             }
             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
 

@@ -1,6 +1,8 @@
 package com.nordicsemi.nrfUARTv2;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
@@ -11,13 +13,16 @@ import java.io.*;
 public class SamplePic {
     private byte pic1 [];
     private byte pic2 [];
+    private byte pic3 [];
 
     private int pic1Length;
     private int pic2Length;
+    private int pic3Length;
 
     public SamplePic(Context context) {
         pic1 = new byte[32767];
         pic2 = new byte[32767];
+        pic3 = new byte[32767];
         ReadSamplePics(context);
     }
 
@@ -29,6 +34,10 @@ public class SamplePic {
     {
         return pic2;
     }
+    public byte [] GetPic3()
+    {
+        return pic3;
+    }
     public int GetPic1Size()
     {
         return pic1Length;
@@ -36,6 +45,11 @@ public class SamplePic {
     public int GetPic2Size()
     {
         return pic2Length;
+    }
+
+    public int GetPic3Size()
+    {
+        return pic3Length;
     }
 
     private void ReadSamplePics(Context context) {
@@ -49,6 +63,13 @@ public class SamplePic {
                 pic2Length = fin.read(pic2);
             }
             fin.close();
+
+            ImageConversion imageConversion = new ImageConversion();
+            Bitmap originalImg = BitmapFactory.decodeResource(context.getResources(), R.raw.lou);
+
+            pic3 = imageConversion.run(originalImg);
+            pic3Length = pic3.length;
+
         } catch (Exception ex) {
             Log.e("ERROR", ex.getMessage());
         } finally {
