@@ -209,8 +209,10 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
             } else if(picNumber == 2) {
                 mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
-            } else {
+            } else if(picNumber == 3) {
                 mService.writeRXCharacteristic(mSamplePic.GetPic3(), mSamplePic.GetPic3Size());
+            } else {
+                mService.writeRXCharacteristic(mSamplePic.GetPic4(), mSamplePic.GetPic4Size());
                 picNumber = 0;
             }
             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
