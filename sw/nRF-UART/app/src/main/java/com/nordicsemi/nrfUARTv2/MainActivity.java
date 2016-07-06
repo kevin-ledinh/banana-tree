@@ -205,16 +205,18 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
             picNumber = (picNumber + 1);
             mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
             Thread.sleep(50);
-            if(picNumber == 1) {
-                mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
-            } else if(picNumber == 2) {
-                mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
-            } else if(picNumber == 3) {
-                mService.writeRXCharacteristic(mSamplePic.GetPic3(), mSamplePic.GetPic3Size());
-            } else {
-                mService.writeRXCharacteristic(mSamplePic.GetPic4(), mSamplePic.GetPic4Size());
+//            if(picNumber == 1) {
+//                mService.writeRXCharacteristic(mSamplePic.GetPic1(), mSamplePic.GetPic1Size());
+//            } else if(picNumber == 2) {
+//                mService.writeRXCharacteristic(mSamplePic.GetPic2(), mSamplePic.GetPic2Size());
+//            } else if(picNumber == 3) {
+//                mService.writeRXCharacteristic(mSamplePic.GetPic3(), mSamplePic.GetPic3Size());
+//            } else if(picNumber == 4) {
+//                mService.writeRXCharacteristic(mSamplePic.GetPic4(), mSamplePic.GetPic4Size());
+//            } else {
+                mService.writeRXCharacteristic(mSamplePic.GetPic5(), mSamplePic.GetPic5Size());
                 picNumber = 0;
-            }
+//            }
             mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
 
         } catch (Exception e){
