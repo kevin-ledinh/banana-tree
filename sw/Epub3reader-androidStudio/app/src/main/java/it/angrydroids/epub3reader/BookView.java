@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,13 +40,22 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 // Panel specialized in visualizing EPUB pages
 public class BookView extends SplitPanel {
+    private final String TAG = this.getClass().getSimpleName();
+
 	public ViewStateEnum state = ViewStateEnum.books;
 	protected String viewedPage;
 	protected WebView view;
 	protected float swipeOriginX, swipeOriginY;
+    protected Button PreButton;
+    protected Button TopButton;
+    protected Button FwdButton;
+
+
+    private StringBuilder mWebviewContent;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState)	{
@@ -116,7 +126,32 @@ public class BookView extends SplitPanel {
 			}
 		});
 
+        mWebviewContent = new StringBuilder();
 
+        PreButton = (Button) getView().findViewById(R.id.btn_prev_chunk);
+        TopButton = (Button) getView().findViewById(R.id.btn_display_from_top);
+        FwdButton = (Button) getView().findViewById(R.id.btn_fwd_chunk);
+
+        PreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BtnPrevChunkOnClickListner(v);
+            }
+        });
+
+        TopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BtnDisplayTopOnClickListner(v);
+            }
+        });
+
+        FwdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BtnFwdChunkOnClickListner(v);
+            }
+        });
 		loadPage(viewedPage);
 	}
 	
@@ -176,25 +211,31 @@ public class BookView extends SplitPanel {
 		loadPage(preferences.getString("page"+index, ""));
 		state = ViewStateEnum.valueOf(preferences.getString("state"+index, ViewStateEnum.books.name()));
 	}
+
+    public void BtnPrevChunkOnClickListner(View v)
+    {
+        Log.d(TAG, "Prev Chunk Button Click");
+    }
+
+    public void BtnDisplayTopOnClickListner(View v)
+    {
+        Log.d(TAG, "Display Top Button Click");
+    }
+
+    public void BtnFwdChunkOnClickListner(View v)
+    {
+        Log.d(TAG, "Fwd Chunk Button Click");
+    }
+
 	/* An instance of this class will be registered as a JavaScript interface */
 	class MyJavaScriptInterface
 	{
-		private StringBuilder mWebviewContent = new StringBuilder();
-
-		public String GetWebviewStringContent()
-		{
-			return mWebviewContent.toString();
-		}
-		public void ClearWebviewStringContent()
-		{
-			mWebviewContent.setLength(0);
-		}
-		//@SuppressWarnings("unused")
 		@JavascriptInterface
 		public void processContent(String aContent)
 		{
 			final String content = aContent;
 			mWebviewContent.append(content);
+            // and notify EPD service that there is a new chaper loaded
 		}
 	}
 }

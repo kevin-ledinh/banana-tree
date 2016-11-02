@@ -32,12 +32,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	private final String TAG = this.getClass().getSimpleName();
 
 	protected EpubNavigator navigator;
 	protected int bookSelector;
@@ -469,4 +472,5 @@ public class MainActivity extends Activity {
 		Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		toast.show();
 	}
+
 }

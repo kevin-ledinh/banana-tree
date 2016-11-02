@@ -170,5 +170,8 @@
     <string name="rew">&lt;&lt;</string>
     <string name="exAudio">exAudio</string>
     <string name="no_audio">Can\'t find any audio file</string>
+    <string name="btn_prev_chunk_string">Prev</string>
+    <string name="btn_fwd_chunk_string">Fwd</string>
+    <string name="btn_display_top_string">Top</string>
 
 </resources>
