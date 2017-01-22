@@ -215,16 +215,19 @@ public class BookView extends SplitPanel {
     public void BtnPrevChunkOnClickListner(View v)
     {
         Log.d(TAG, "Prev Chunk Button Click");
+		// next, notify the navigator that the prev chunk is required
     }
 
     public void BtnDisplayTopOnClickListner(View v)
     {
         Log.d(TAG, "Display Top Button Click");
+		// next, notify the navigator that the top of the chapter is required
     }
 
     public void BtnFwdChunkOnClickListner(View v)
     {
         Log.d(TAG, "Fwd Chunk Button Click");
+		// next, notify the navigator that the next chunk is required
     }
 
 	/* An instance of this class will be registered as a JavaScript interface */
@@ -233,9 +236,9 @@ public class BookView extends SplitPanel {
 		@JavascriptInterface
 		public void processContent(String aContent)
 		{
-			final String content = aContent;
-			mWebviewContent.append(content);
-            // and notify EPD service that there is a new chaper loaded
+            mWebviewContent.setLength(0);
+			mWebviewContent.append(aContent);
+            // and notify EPD service that there is a new chapter is loaded
 		}
 	}
 }

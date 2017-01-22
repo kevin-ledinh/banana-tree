@@ -48,6 +48,7 @@
             <item android:id="@+id/secondAudio" android:title="@string/Book_2"/>
         </menu>
     </item>
+    <item android:id="@+id/ScanBLE" android:title="@string/scan_BLE_device"></item>
 
 
 </menu>

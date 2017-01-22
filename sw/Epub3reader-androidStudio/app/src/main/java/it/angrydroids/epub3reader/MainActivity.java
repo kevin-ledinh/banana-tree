@@ -27,11 +27,15 @@ package it.angrydroids.epub3reader;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +50,15 @@ public class MainActivity extends Activity {
 	protected int bookSelector;
 	protected int panelCount;
 	protected String[] settings;
+
+    private final static int REQUEST_ENABLE_BT = 1;
+    private BluetoothAdapter mBluetoothAdapter;// Initializes Bluetooth adapter.
+    private BluetoothManager bluetoothManager;
+    private boolean mScanning;
+    private Handler mHandler = new Handler();
+
+    // Stops scanning after 10 seconds.
+    private static final long SCAN_PERIOD = 10000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,16 @@ public class MainActivity extends Activity {
 			Intent goToChooser = new Intent(this, FileChooser.class);
 			startActivityForResult(goToChooser, 0);
 		}
+
+
+        bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+        // Ensures Bluetooth is available on the device and it is enabled. If not,
+        // displays a dialog requesting user permission to enable Bluetooth.
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
 	}
 
 	protected void onResume() {
@@ -319,12 +342,59 @@ public class MainActivity extends Activity {
 			if (!navigator.extractAudio(1))
 				errorMessage(getString(R.string.no_audio));
 			return true;
+        case R.id.ScanBLE:
+			Log.i(TAG, "Scanning button is pressed");
+            // auto scan and attach BLE device here.
+            scanBLEDevices();
+            // If success, change label to Disconnect BLE and notify a successful connection
+            // Otherwise, keep the name and show info message
+            return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	// ----
+	// ---- BLE Service
+    private void scanBLEDevices()
+    {
+        // Ensures Bluetooth is available on the device and it is enabled. If not,
+        // displays a dialog requesting user permission to enable Bluetooth.
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        if( mBluetoothAdapter.isEnabled() ) {
+            // Stops scanning after a pre-defined scan period.
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                }
+            }, SCAN_PERIOD);
+
+            mScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallback);
+        } else {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        }
+    }
+    // Device scan callback.
+    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+            new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(final BluetoothDevice device, final int rssi,
+                                     byte[] scanRecord) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "Device: " + device.getName() + " RSSI: " + rssi);
+                        }
+                    });
+                }
+            };
 
 	// ---- Panels Manager
 	public void addPanel(SplitPanel p) {

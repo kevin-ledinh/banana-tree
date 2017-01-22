@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "it.angrydroids.epub3reader"
-        minSdkVersion 13
-        targetSdkVersion 17
+        minSdkVersion 18
+        targetSdkVersion 19
     }
 
     buildTypes {

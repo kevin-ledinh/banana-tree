@@ -173,5 +173,6 @@
     <string name="btn_prev_chunk_string">Prev</string>
     <string name="btn_fwd_chunk_string">Fwd</string>
     <string name="btn_display_top_string">Top</string>
+    <string name="scan_BLE_device">Scan BLE</string>
 
 </resources>
