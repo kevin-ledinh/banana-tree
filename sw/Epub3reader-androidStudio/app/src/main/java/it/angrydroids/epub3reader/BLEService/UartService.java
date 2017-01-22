@@ -20,7 +20,7 @@
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.nordicsemi.nrfUARTv2;
+package it.angrydroids.epub3reader.BLEService;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -165,7 +165,7 @@ public class UartService extends Service {
     }
 
     public class LocalBinder extends Binder {
-        UartService getService() {
+        public UartService getService() {
             return UartService.this;
         }
     }

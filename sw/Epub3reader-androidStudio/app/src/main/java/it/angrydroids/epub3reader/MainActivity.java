@@ -30,32 +30,48 @@ import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import it.angrydroids.epub3reader.BLEService.UartService;
 
 public class MainActivity extends Activity {
 	private final String TAG = this.getClass().getSimpleName();
+	private final static int REQUEST_ENABLE_BT = 1;
+	private static final int UART_PROFILE_CONNECTED = 20;
+	private static final int UART_PROFILE_DISCONNECTED = 21;
 
 	protected EpubNavigator navigator;
 	protected int bookSelector;
 	protected int panelCount;
 	protected String[] settings;
 
-    private final static int REQUEST_ENABLE_BT = 1;
+	private int mState = UART_PROFILE_DISCONNECTED;
     private BluetoothAdapter mBluetoothAdapter;// Initializes Bluetooth adapter.
     private BluetoothManager bluetoothManager;
     private boolean mScanning;
     private Handler mHandler = new Handler();
+	private UartService mService = null;
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
@@ -89,7 +105,26 @@ public class MainActivity extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+		service_init();
 	}
+
+	//UART service connected/disconnected
+	private ServiceConnection mServiceConnection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
+			mService = ((UartService.LocalBinder) rawBinder).getService();
+			Log.d(TAG, "onServiceConnected mService= " + mService);
+			if (!mService.initialize()) {
+				Log.e(TAG, "Unable to initialize Bluetooth");
+				finish();
+			}
+
+		}
+
+		public void onServiceDisconnected(ComponentName classname) {
+			////     mService.disconnect(mDevice);
+			mService = null;
+		}
+	};
 
 	protected void onResume() {
 		super.onResume();
@@ -106,6 +141,22 @@ public class MainActivity extends Activity {
 		Editor editor = preferences.edit();
 		saveState(editor);
 		editor.commit();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.d(TAG, "onDestroy()");
+
+		try {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(UARTStatusChangeReceiver);
+		} catch (Exception ignore) {
+			Log.e(TAG, ignore.toString());
+		}
+		unbindService(mServiceConnection);
+		mService.stopSelf();
+		mService= null;
+
 	}
 
 	// load the selected book
@@ -395,6 +446,123 @@ public class MainActivity extends Activity {
                     });
                 }
             };
+
+	private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
+
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			final String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+			//*********************//
+			if (action.equals(UartService.ACTION_GATT_CONNECTED)) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Log.d(TAG, "ACTION_GATT_CONNECTED");
+						mState = UART_PROFILE_CONNECTED;
+						mService.close();
+
+					}
+				});
+			}
+
+			//*********************//
+			if (action.equals(UartService.ACTION_GATT_DISCONNECTED)) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Log.d(TAG, "UART_DISCONNECT_MSG");
+						mState = UART_PROFILE_DISCONNECTED;
+						mService.close();
+
+					}
+				});
+			}
+
+			//*********************//
+			if (action.equals(UartService.ACTION_GATT_SERVICES_DISCOVERED)) {
+				mService.enableTXNotification();
+			}
+			//*********************//
+			if (action.equals(UartService.ACTION_DATA_AVAILABLE)) {
+
+				final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
+				runOnUiThread(new Runnable() {
+					public void run() {
+						try {
+
+							String text = new String("Unrecognized value");
+							if(txValue.length <= 20)
+							{
+								int msg_start = ( txValue[1] << 8 ) | txValue[0];
+								if( msg_start == 0x3E3E )
+								{
+									switch( txValue[2] )
+									{
+										case 0x00: //MSG_TYPE_TX_IMAGE
+											text = "MSG_TYPE_TX_IMAGE Rx";
+											break;
+										case 0x01: //MSG_TYPE_ACK
+											text = "MSG_TYPE_ACK Rx";
+											if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
+												text += ": missing data chunk";
+												//updateAndSendSamplePic();
+											} else {
+												text += ": no error";
+											}
+											break;
+										case 0x02: // MSG_FINISH_TX_IMAGE
+											text = "MSG_FINISH_TX_IMAGE Rx";
+											break;
+										case 0x03: // MSG_TYPE_FORWARD
+											text = "MSG_TYPE_FORWARD Rx";
+											//updateAndSendSamplePic();
+											break;
+										case 0x04: // MSG_TYPE_BACKWARD
+											text = "MSG_TYPE_BACKWARD Rx";
+											//updateAndSendSamplePic();
+											break;
+										default:
+											// silently ignore
+											break;
+									}
+								}
+							}
+
+
+							Log.d(TAG, "[" + currentDateTimeString + "] RX: " + text);
+
+						} catch (Exception e) {
+							Log.e(TAG, e.toString());
+						}
+					}
+				});
+			}
+			//*********************//
+			if (action.equals(UartService.DEVICE_DOES_NOT_SUPPORT_UART)){
+				showMessage("Device doesn't support UART. Disconnecting");
+				mService.disconnect();
+			}
+
+
+		}
+	};
+	private void showMessage(String msg) {
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+	}
+	private void service_init() {
+		Intent bindIntent = new Intent(this, UartService.class);
+		bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+
+		LocalBroadcastManager.getInstance(this).registerReceiver(UARTStatusChangeReceiver, makeGattUpdateIntentFilter());
+	}
+	private static IntentFilter makeGattUpdateIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(UartService.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(UartService.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(UartService.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(UartService.ACTION_DATA_AVAILABLE);
+		intentFilter.addAction(UartService.DEVICE_DOES_NOT_SUPPORT_UART);
+		return intentFilter;
+	}
 
 	// ---- Panels Manager
 	public void addPanel(SplitPanel p) {
