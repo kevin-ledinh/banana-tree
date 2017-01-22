@@ -342,7 +342,7 @@ public class UartService extends Service {
 
         boolean status = false;
         BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
-    	showMessage("mBluetoothGatt null"+ mBluetoothGatt);
+    	//showMessage("mBluetoothGatt null"+ mBluetoothGatt);
     	if (RxService == null) {
             showMessage("Rx service not found!");
             broadcastUpdate(DEVICE_DOES_NOT_SUPPORT_UART);

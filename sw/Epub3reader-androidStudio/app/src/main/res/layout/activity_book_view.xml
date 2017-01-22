@@ -63,7 +63,8 @@
             android:id="@+id/btn_fwd_chunk"
             android:layout_alignTop="@+id/btn_display_from_top"
             android:layout_toLeftOf="@+id/CloseButton"
-            android:layout_toStartOf="@+id/CloseButton" />
+            android:layout_toStartOf="@+id/CloseButton"
+            android:onClick="updateAndSendSamplePic"/>
     </RelativeLayout>
 
 </RelativeLayout>

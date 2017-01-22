@@ -46,12 +46,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import it.angrydroids.epub3reader.BLEService.UartService;
 
@@ -60,6 +67,7 @@ public class MainActivity extends Activity {
 	private final static int REQUEST_ENABLE_BT = 1;
 	private static final int UART_PROFILE_CONNECTED = 20;
 	private static final int UART_PROFILE_DISCONNECTED = 21;
+	private static final int UART_SCANNING_BLE_DEVICES = 30;
 
 	protected EpubNavigator navigator;
 	protected int bookSelector;
@@ -69,12 +77,26 @@ public class MainActivity extends Activity {
 	private int mState = UART_PROFILE_DISCONNECTED;
     private BluetoothAdapter mBluetoothAdapter;// Initializes Bluetooth adapter.
     private BluetoothManager bluetoothManager;
+	private BluetoothDevice mDevice = null;
     private boolean mScanning;
     private Handler mHandler = new Handler();
 	private UartService mService = null;
 
+	List<BluetoothDevice> deviceList;
+	Map<String, Integer> devRssiValues;
+
+	private int picNumber = 0;
+	private byte [] txImageCmd = {0x25 , 0x25 , 0x00};
+	private byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
+	private byte pic1 [] = new byte[32767];
+	private byte pic2 [] = new byte[32767];
+	private int pic1Length;
+	private int pic2Length;
+
+    private Button btnFwd,btnBack;
+
     // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 10000;
+    private static final long SCAN_PERIOD = 5000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +128,19 @@ public class MainActivity extends Activity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 		service_init();
+
+        deviceList = new ArrayList<BluetoothDevice>();
+        devRssiValues = new HashMap<String, Integer>();
+
+		ReadSamplePics(this);
+
 	}
 
 	//UART service connected/disconnected
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
-			mService = ((UartService.LocalBinder) rawBinder).getService();
+            UartService.LocalBinder binder = (UartService.LocalBinder) rawBinder;
+			mService = binder.getService();
 			Log.d(TAG, "onServiceConnected mService= " + mService);
 			if (!mService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
@@ -396,7 +425,22 @@ public class MainActivity extends Activity {
         case R.id.ScanBLE:
 			Log.i(TAG, "Scanning button is pressed");
             // auto scan and attach BLE device here.
-            scanBLEDevices();
+			switch (mState) {
+				case UART_PROFILE_DISCONNECTED:
+                    Toast.makeText(this, "Scanning for BLE devices", Toast.LENGTH_SHORT).show();
+					scanBLEDevices();
+					break;
+				case UART_PROFILE_CONNECTED:
+                    if (mDevice != null) {
+                        mService.disconnect();
+                    }
+					break;
+				case UART_SCANNING_BLE_DEVICES:
+                    Toast.makeText(this, "Scanning for BLE devices", Toast.LENGTH_SHORT).show();
+					break;
+				default:
+					break;
+			}
             // If success, change label to Disconnect BLE and notify a successful connection
             // Otherwise, keep the name and show info message
             return true;
@@ -422,10 +466,13 @@ public class MainActivity extends Activity {
                 public void run() {
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					//Auto connect here
+					ConnectBLEDevice();
                 }
             }, SCAN_PERIOD);
 
             mScanning = true;
+			mState = UART_SCANNING_BLE_DEVICES;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
             mScanning = false;
@@ -442,11 +489,74 @@ public class MainActivity extends Activity {
                         @Override
                         public void run() {
                             Log.d(TAG, "Device: " + device.getName() + " RSSI: " + rssi);
+							addDevice(device,rssi);
                         }
                     });
                 }
             };
 
+	private void addDevice(BluetoothDevice device, int rssi) {
+		boolean deviceFound = false;
+
+		for (BluetoothDevice listDev : deviceList) {
+			if (listDev.getAddress().equals(device.getAddress())) {
+				deviceFound = true;
+				break;
+			}
+		}
+
+		devRssiValues.put(device.getAddress(), rssi);
+		if (!deviceFound) {
+			deviceList.add(device);
+		}
+	}
+
+	private void ConnectBLEDevice(){
+		for (BluetoothDevice listDev : deviceList) {
+			if (listDev.getName().equals("Nordic_UART")) {
+				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(listDev.getAddress());
+				mService.connect(listDev.getAddress());
+				break;
+			}
+		}
+	}
+
+	private void ReadSamplePics(Context context) {
+		try {
+			InputStream fin = context.getResources().openRawResource(R.raw.sample1);
+			if(fin != null) {
+				pic1Length = fin.read(pic1);
+			}
+			fin = context.getResources().openRawResource(R.raw.sample2);
+			if(fin != null) {
+				pic2Length = fin.read(pic2);
+			}
+			fin.close();
+
+		} catch (Exception ex) {
+			Log.e("ERROR", ex.getMessage());
+		} finally {
+
+		}
+	}
+	private void updateAndSendSamplePic(){
+		try {
+
+			mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
+			Thread.sleep(50);
+            ++picNumber;
+            if(picNumber == 1) {
+                mService.writeRXCharacteristic(pic1 , pic1Length);
+            } else if(picNumber == 2) {
+				mService.writeRXCharacteristic(pic2 , pic2Length);
+				picNumber = 0;
+            }
+			mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
+
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 	private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
 
 		public void onReceive(Context context, Intent intent) {
@@ -456,11 +566,10 @@ public class MainActivity extends Activity {
 			if (action.equals(UartService.ACTION_GATT_CONNECTED)) {
 				runOnUiThread(new Runnable() {
 					public void run() {
+                        Toast.makeText(MainActivity.this, "EPD connected", Toast.LENGTH_SHORT).show();
 						Log.d(TAG, "ACTION_GATT_CONNECTED");
 						mState = UART_PROFILE_CONNECTED;
-						mService.close();
-
-					}
+                    }
 				});
 			}
 
@@ -468,10 +577,10 @@ public class MainActivity extends Activity {
 			if (action.equals(UartService.ACTION_GATT_DISCONNECTED)) {
 				runOnUiThread(new Runnable() {
 					public void run() {
+                        Toast.makeText(MainActivity.this, "EPD disconnected", Toast.LENGTH_SHORT).show();
 						Log.d(TAG, "UART_DISCONNECT_MSG");
 						mState = UART_PROFILE_DISCONNECTED;
 						mService.close();
-
 					}
 				});
 			}
@@ -503,7 +612,7 @@ public class MainActivity extends Activity {
 											text = "MSG_TYPE_ACK Rx";
 											if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
 												text += ": missing data chunk";
-												//updateAndSendSamplePic();
+												updateAndSendSamplePic();
 											} else {
 												text += ": no error";
 											}
@@ -513,11 +622,11 @@ public class MainActivity extends Activity {
 											break;
 										case 0x03: // MSG_TYPE_FORWARD
 											text = "MSG_TYPE_FORWARD Rx";
-											//updateAndSendSamplePic();
+											updateAndSendSamplePic();
 											break;
 										case 0x04: // MSG_TYPE_BACKWARD
 											text = "MSG_TYPE_BACKWARD Rx";
-											//updateAndSendSamplePic();
+											updateAndSendSamplePic();
 											break;
 										default:
 											// silently ignore
