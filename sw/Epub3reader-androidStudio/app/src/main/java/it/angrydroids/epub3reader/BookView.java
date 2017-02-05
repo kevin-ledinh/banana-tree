@@ -55,7 +55,6 @@ public class BookView extends SplitPanel {
     protected Button FwdButton;
 
 
-    private StringBuilder mWebviewContent;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState)	{
@@ -125,8 +124,6 @@ public class BookView extends SplitPanel {
 				view.loadUrl("javascript:window.INTERFACE.processContent(document.getElementsByTagName('body')[0].innerText);");
 			}
 		});
-
-        mWebviewContent = new StringBuilder();
 
         PreButton = (Button) getView().findViewById(R.id.btn_prev_chunk);
         TopButton = (Button) getView().findViewById(R.id.btn_display_from_top);
@@ -236,8 +233,7 @@ public class BookView extends SplitPanel {
 		@JavascriptInterface
 		public void processContent(String aContent)
 		{
-            mWebviewContent.setLength(0);
-			mWebviewContent.append(aContent);
+			mEPDMainService.SetCurrentChapterText( aContent );
             // and notify EPD service that there is a new chapter is loaded
 		}
 	}

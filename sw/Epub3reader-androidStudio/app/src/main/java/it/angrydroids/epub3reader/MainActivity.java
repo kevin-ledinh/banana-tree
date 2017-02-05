@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.angrydroids.epub3reader.BLEService.UartService;
+import it.angrydroids.epub3reader.EPDService.EPDMainService;
 
 public class MainActivity extends Activity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
 	private int pic1Length;
 	private int pic2Length;
 
-    private Button btnFwd,btnBack;
+	protected EPDMainService mEPDMainService;
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 5000;
@@ -134,6 +135,7 @@ public class MainActivity extends Activity {
 
 		ReadSamplePics(this);
 
+		mEPDMainService = new EPDMainService();
 	}
 
 	//UART service connected/disconnected
@@ -544,13 +546,23 @@ public class MainActivity extends Activity {
 
 			mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
 			Thread.sleep(50);
-            ++picNumber;
-            if(picNumber == 1) {
-                mService.writeRXCharacteristic(pic1 , pic1Length);
-            } else if(picNumber == 2) {
-				mService.writeRXCharacteristic(pic2 , pic2Length);
-				picNumber = 0;
+            /* Disabling previous sample codes */
+//            ++picNumber;
+//            if(picNumber == 1) {
+//                mService.writeRXCharacteristic(pic1 , pic1Length);
+//            } else if(picNumber == 2) {
+//				mService.writeRXCharacteristic(pic2 , pic2Length);
+//				picNumber = 0;
+//            }
+            /* Use real book page now */
+            if( mEPDMainService.GetCurrentChapterTextLength() > 0 ) {
+                Log.d(TAG, "The current chapter length is: " + mEPDMainService.GetCurrentChapterTextLength());
+                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition(), mEPDMainService.GetEPDBytesLength());
+            } else {
+                Log.d(TAG, "The current chapter is empty.");
             }
+
+
 			mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
 
 		} catch (Exception e){
