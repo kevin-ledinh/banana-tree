@@ -543,27 +543,18 @@ public class MainActivity extends Activity {
 	}
 	private void updateAndSendSamplePic(){
 		try {
-
-			mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
-			Thread.sleep(50);
-            /* Disabling previous sample codes */
-//            ++picNumber;
-//            if(picNumber == 1) {
-//                mService.writeRXCharacteristic(pic1 , pic1Length);
-//            } else if(picNumber == 2) {
-//				mService.writeRXCharacteristic(pic2 , pic2Length);
-//				picNumber = 0;
-//            }
             /* Use real book page now */
-            if( mEPDMainService.GetCurrentChapterTextLength() > 0 ) {
+            if( mEPDMainService.IsNextPageAvailable() ) {
+				mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
+				Thread.sleep(50);
                 Log.d(TAG, "The current chapter length is: " + mEPDMainService.GetCurrentChapterTextLength());
-                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition(), mEPDMainService.GetEPDBytesLength());
+                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition( true ), mEPDMainService.GetEPDBytesLength());
+				mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
             } else {
                 Log.d(TAG, "The current chapter is empty.");
             }
 
 
-			mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
 
 		} catch (Exception e){
 			e.printStackTrace();
