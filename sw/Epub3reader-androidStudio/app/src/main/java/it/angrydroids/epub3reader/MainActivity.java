@@ -95,6 +95,7 @@ public class MainActivity extends Activity {
 	private int pic2Length;
 
 	protected EPDMainService mEPDMainService;
+	private boolean PageForwards = true;
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 5000;
@@ -541,14 +542,14 @@ public class MainActivity extends Activity {
 
 		}
 	}
-	private void updateAndSendSamplePic(){
+	private void updateAndSendSamplePic( boolean forwards ){
 		try {
             /* Use real book page now */
-            if( mEPDMainService.IsNextPageAvailable() ) {
+            if( mEPDMainService.IsNextPageAvailable( forwards ) ) {
 				mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
 				Thread.sleep(50);
                 Log.d(TAG, "The current chapter length is: " + mEPDMainService.GetCurrentChapterTextLength());
-                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition( true ), mEPDMainService.GetEPDBytesLength());
+                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition(), mEPDMainService.GetEPDBytesLength());
 				mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
             } else {
                 Log.d(TAG, "The current chapter is empty.");
@@ -615,7 +616,7 @@ public class MainActivity extends Activity {
 											text = "MSG_TYPE_ACK Rx";
 											if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
 												text += ": missing data chunk";
-												updateAndSendSamplePic();
+												updateAndSendSamplePic(PageForwards);
 											} else {
 												text += ": no error";
 											}
@@ -625,11 +626,13 @@ public class MainActivity extends Activity {
 											break;
 										case 0x03: // MSG_TYPE_FORWARD
 											text = "MSG_TYPE_FORWARD Rx";
-											updateAndSendSamplePic();
+                                            PageForwards = true;
+											updateAndSendSamplePic(PageForwards);
 											break;
 										case 0x04: // MSG_TYPE_BACKWARD
 											text = "MSG_TYPE_BACKWARD Rx";
-											updateAndSendSamplePic();
+                                            PageForwards = false;
+											updateAndSendSamplePic(PageForwards);
 											break;
 										default:
 											// silently ignore

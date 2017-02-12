@@ -7,6 +7,8 @@ import android.graphics.ColorMatrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,10 +16,11 @@ import java.util.List;
  */
 public class EPDMainService {
     private final String TAG = this.getClass().getSimpleName();
-    private final int MAX_CHARACTERS_ON_PAGE = 400;
+    private final int MAX_CHARACTERS_ON_PAGE = 450;
 
     /* Ebook text buffer */
-    private StringBuilder ChapterText;
+    //private StringBuilder ChapterText;
+    private List<String> ChapterTextList;
     private int CurrentChapterTextLength;
     private int CurrentChapterReadIdx;
     private boolean lastChapterChunk;
@@ -28,11 +31,12 @@ public class EPDMainService {
     private int EPDPageBytesLength;
 
     public int GetCurrentChapterTextLength() { return CurrentChapterTextLength; }
-    public int GetRemainingChapterLength() { return ( ChapterText.length() - CurrentChapterReadIdx ); }
+    //public int GetRemainingChapterLength() { return ( ChapterText.length() - CurrentChapterReadIdx ); }
     public int GetEPDBytesLength() { return EPDPageBytesLength; }
 
     public EPDMainService() {
-        ChapterText = new StringBuilder();
+        //ChapterText = new StringBuilder();
+        ChapterTextList = new ArrayList<String>();
         CurrentChapterTextLength = 0;
         CurrentChapterReadIdx = 0;
         lastChapterChunk = false;
@@ -41,38 +45,42 @@ public class EPDMainService {
     }
 
     public void SetCurrentChapterText( String text ){
+        int index = 0;
         CurrentChapterTextLength = text.length();
         CurrentChapterReadIdx = 0;
         lastChapterChunk = false;
-        ChapterText.setLength(0);
-        ChapterText.append(text);
+        //ChapterText.setLength(0);
+        //ChapterText.append(text);
+
+        ChapterTextList.clear();
+        while (index < text.length()) {
+            ChapterTextList.add(text.substring(index, Math.min(index + MAX_CHARACTERS_ON_PAGE,text.length())));
+            index += MAX_CHARACTERS_ON_PAGE;
+        }
     }
 
-    public byte [] GetEPDPageFromCurrentPosition( boolean forwards ){
-        ConvertTextToEPDPage( GetTextFromCurrentChapter( MAX_CHARACTERS_ON_PAGE, forwards ) );
+    public byte [] GetEPDPageFromCurrentPosition(){
+        ConvertTextToEPDPage( ChapterTextList.get(CurrentChapterReadIdx) );
         return EPDPageBytes;
     }
 
-    public boolean IsNextPageAvailable() {
+    public boolean IsNextPageAvailable( boolean forwards ) {
         boolean pageAvai = false;
-        if( !lastChapterChunk ) {
-            if( GetRemainingChapterLength() > 0 ) {
+        int NextChapterIdx = CurrentChapterReadIdx;
+        if( forwards ) {
+            NextChapterIdx++;
+            if ( NextChapterIdx < ChapterTextList.size() ) {
                 pageAvai = true;
+                CurrentChapterReadIdx = NextChapterIdx;
+            }
+        } else {
+            NextChapterIdx--;
+            if( NextChapterIdx >= 0 ) {
+                pageAvai = true;
+                CurrentChapterReadIdx = NextChapterIdx;
             }
         }
         return pageAvai;
-    }
-
-    private String GetTextFromCurrentChapter( int TextLength, boolean forwards ){
-        String returnText = "";
-        if( GetRemainingChapterLength() >= TextLength ) {
-            returnText = ChapterText.substring(CurrentChapterReadIdx, CurrentChapterReadIdx + TextLength);
-            CurrentChapterReadIdx += TextLength;
-        } else {
-            returnText = ChapterText.substring(CurrentChapterReadIdx, ChapterText.length());
-            lastChapterChunk = true;
-        }
-        return returnText;
     }
 
     private void ConvertTextToEPDPage(String text){
