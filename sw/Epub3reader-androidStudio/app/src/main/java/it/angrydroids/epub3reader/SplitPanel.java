@@ -51,7 +51,6 @@ public abstract class SplitPanel extends Fragment {
 	protected int screenHeight;
 	protected float weight = 0.5f; // weight of the generalLayout
 	protected boolean created; // tells whether the fragment has been created
-	protected EPDMainService mEPDMainService;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +59,7 @@ public abstract class SplitPanel extends Fragment {
 		View v = inflater.inflate(R.layout.activity_split_panel, container,
 				false);
 		created = false;
-		mEPDMainService = ((MainActivity) getActivity()).mEPDMainService;;
+
 		return v;
 	}
 

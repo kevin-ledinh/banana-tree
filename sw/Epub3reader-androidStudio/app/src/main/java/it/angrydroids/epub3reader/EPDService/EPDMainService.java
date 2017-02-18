@@ -1,56 +1,84 @@
 package it.angrydroids.epub3reader.EPDService;
 
+import android.app.Service;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by kevin on 02/11/2016.
  */
-public class EPDMainService {
+public class EPDMainService extends Service {
     private final String TAG = this.getClass().getSimpleName();
     private final int MAX_CHARACTERS_ON_PAGE = 450;
 
+    public static final int MSG_NEW_CHAPTER_AVAILABLE = 1;
+    public static final int MSG_NEXT_CHAPTER_CHUNK_REQ = 2;
+    public static final int MSG_PREV_CHAPTER_CHUNK_REQ = 3;
+    public static final int MSG_CHAPTER_CHUNK_AVAILABLE = 4;
+    public static final int MSG_RESEND_CHAPTER_CHUNK = 5;
+
+    public static final String MSG_NEW_CHAPTER_TEXT = "it.angrydroids.epub3reader.EPDService.MSG_NEW_CHAPTER_TEXT";
+    public static final String MSG_BLE_DATA_AVAILABLE = "it.angrydroids.epub3reader.EPDService.MSG_BLE_DATA_AVAILABLE";
+
+    // Variables for Android Service
+    private final Messenger mEPDMainServiceMessenger = new Messenger(new IncomingHandler());
+
     /* Ebook text buffer */
-    //private StringBuilder ChapterText;
-    private List<String> ChapterTextList;
-    private int CurrentChapterTextLength;
-    private int CurrentChapterReadIdx;
-    private boolean lastChapterChunk;
+    private List<String> ChapterTextList = new ArrayList<String>();
+    private int CurrentChapterReadIdx = 0;
 
     /* EPD file format support */
-    private byte EPDPageBytes [];
-    private ImageConversion imageConversion;
-    private int EPDPageBytesLength;
+    private byte EPDPageBytes [] = new byte[32767];
+    private ImageConversion imageConversion = new ImageConversion();
 
-    public int GetCurrentChapterTextLength() { return CurrentChapterTextLength; }
-    //public int GetRemainingChapterLength() { return ( ChapterText.length() - CurrentChapterReadIdx ); }
-    public int GetEPDBytesLength() { return EPDPageBytesLength; }
-
-    public EPDMainService() {
-        //ChapterText = new StringBuilder();
-        ChapterTextList = new ArrayList<String>();
-        CurrentChapterTextLength = 0;
-        CurrentChapterReadIdx = 0;
-        lastChapterChunk = false;
-        imageConversion = new ImageConversion();
-        EPDPageBytes = new byte[32767];
+    /**************************************************
+     * Start of code to handle Android Service
+     *
+     **************************************************/
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mEPDMainServiceMessenger.getBinder();
     }
 
-    public void SetCurrentChapterText( String text ){
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_NEW_CHAPTER_AVAILABLE:
+                    SetCurrentChapterText( msg.getData().getString( MSG_NEW_CHAPTER_TEXT ) );
+                    // TODO: Prepare the first Chunk and send back to the Main Activity
+                    break;
+                case MSG_NEXT_CHAPTER_CHUNK_REQ:
+                    break;
+                case MSG_PREV_CHAPTER_CHUNK_REQ:
+                    break;
+                case MSG_RESEND_CHAPTER_CHUNK:
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+    /**************************************************
+     * End of code to handle Android Service
+     *
+     **************************************************/
+
+    private void SetCurrentChapterText( String text ){
         int index = 0;
-        CurrentChapterTextLength = text.length();
         CurrentChapterReadIdx = 0;
-        lastChapterChunk = false;
-        //ChapterText.setLength(0);
-        //ChapterText.append(text);
 
         ChapterTextList.clear();
         while (index < text.length()) {
@@ -113,6 +141,5 @@ public class EPDMainService {
             i++;
         }
         EPDPageBytes = imageConversion.run(bmpGrayscale);
-        EPDPageBytesLength = EPDPageBytes.length;
     }
 }

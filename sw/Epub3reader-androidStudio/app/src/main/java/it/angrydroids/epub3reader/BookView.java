@@ -42,6 +42,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import it.angrydroids.epub3reader.EPDService.EPDMainService;
+
 // Panel specialized in visualizing EPUB pages
 public class BookView extends SplitPanel {
     private final String TAG = this.getClass().getSimpleName();
@@ -233,8 +235,18 @@ public class BookView extends SplitPanel {
 		@JavascriptInterface
 		public void processContent(String aContent)
 		{
-			mEPDMainService.SetCurrentChapterText( aContent );
-            // and notify EPD service that there is a new chapter is loaded
+            try {
+                Bundle newChapter = new Bundle();
+                newChapter.putCharArray(EPDMainService.MSG_NEW_CHAPTER_TEXT, aContent.toCharArray());
+                Message msg = new Message();
+                msg.setData(newChapter);
+                msg.replyTo = ((MainActivity) getActivity()).mMainActivityMessenger;
+                if (((MainActivity) getActivity()).mEPDMainService != null) {
+                    ((MainActivity) getActivity()).mEPDMainService.send(msg);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 		}
 	}
 }

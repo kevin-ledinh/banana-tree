@@ -20,6 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <service android:name=".BLEService.UartService" />
+        <service android:name=".EPDService.EPDMainService" />
         <activity
             android:name="it.angrydroids.epub3reader.MainActivity"
             android:label="@string/app_name" >

@@ -41,18 +41,15 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,16 +83,9 @@ public class MainActivity extends Activity {
 	List<BluetoothDevice> deviceList;
 	Map<String, Integer> devRssiValues;
 
-	private int picNumber = 0;
-	private byte [] txImageCmd = {0x25 , 0x25 , 0x00};
-	private byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
-	private byte pic1 [] = new byte[32767];
-	private byte pic2 [] = new byte[32767];
-	private int pic1Length;
-	private int pic2Length;
-
-	protected EPDMainService mEPDMainService;
-	private boolean PageForwards = true;
+    /* Variables to handle Messages between the Main Activity and the EPDMainService */
+	protected Messenger mEPDMainService = null;
+    protected final  Messenger mMainActivityMessenger = new Messenger(new IncomingHandler());
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 5000;
@@ -129,18 +119,15 @@ public class MainActivity extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-		service_init();
+		BLEServiceInit();
+        EPDMainServiceInit();
 
         deviceList = new ArrayList<BluetoothDevice>();
         devRssiValues = new HashMap<String, Integer>();
-
-		ReadSamplePics(this);
-
-		mEPDMainService = new EPDMainService();
 	}
 
 	//UART service connected/disconnected
-	private ServiceConnection mServiceConnection = new ServiceConnection() {
+	private ServiceConnection mBLEServiceConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
             UartService.LocalBinder binder = (UartService.LocalBinder) rawBinder;
 			mService = binder.getService();
@@ -158,6 +145,20 @@ public class MainActivity extends Activity {
 		}
 	};
 
+	private ServiceConnection mEPDMainServiceConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName className,
+									   IBinder service) {
+			// We've bound to LocalService, cast the IBinder and get LocalService instance
+			mEPDMainService = new Messenger(service);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName arg0) {
+			mEPDMainService = null;
+		}
+	};
 	protected void onResume() {
 		super.onResume();
 		if (panelCount == 0) {
@@ -185,7 +186,8 @@ public class MainActivity extends Activity {
 		} catch (Exception ignore) {
 			Log.e(TAG, ignore.toString());
 		}
-		unbindService(mServiceConnection);
+		unbindService(mBLEServiceConnection);
+        unbindService(mEPDMainServiceConnection);
 		mService.stopSelf();
 		mService= null;
 
@@ -524,43 +526,23 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void ReadSamplePics(Context context) {
-		try {
-			InputStream fin = context.getResources().openRawResource(R.raw.sample1);
-			if(fin != null) {
-				pic1Length = fin.read(pic1);
-			}
-			fin = context.getResources().openRawResource(R.raw.sample2);
-			if(fin != null) {
-				pic2Length = fin.read(pic2);
-			}
-			fin.close();
-
-		} catch (Exception ex) {
-			Log.e("ERROR", ex.getMessage());
-		} finally {
-
-		}
-	}
-	private void updateAndSendSamplePic( boolean forwards ){
+	private void updateAndSendSamplePic( byte [] data ) {
 		try {
             /* Use real book page now */
-            if( mEPDMainService.IsNextPageAvailable( forwards ) ) {
-				mService.writeRXCharacteristic(txImageCmd, txImageCmd.length);  // initiate an image transfer session
-				Thread.sleep(50);
-                Log.d(TAG, "The current chapter length is: " + mEPDMainService.GetCurrentChapterTextLength());
-                mService.writeRXCharacteristic(mEPDMainService.GetEPDPageFromCurrentPosition(), mEPDMainService.GetEPDBytesLength());
-				mService.writeRXCharacteristic(txImageDoneCmd, txImageDoneCmd.length);  // inform the BLE board that img transfer is done
-            } else {
-                Log.d(TAG, "The current chapter is empty.");
-            }
+            // initiate an image transfer session
+            mService.writeRXCharacteristic(UartService.txImageCmd, UartService.txImageCmd.length);
+            Thread.sleep(50);
+            mService.writeRXCharacteristic( data, data.length );
+            // inform the BLE board that img transfer is done
+            mService.writeRXCharacteristic( UartService.txImageDoneCmd, UartService.txImageDoneCmd.length);
 
-
-
-		} catch (Exception e){
+		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		} catch (Exception ex) {
+            ex.printStackTrace();
+        }
 	}
+
 	private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
 
 		public void onReceive(Context context, Intent intent) {
@@ -616,7 +598,8 @@ public class MainActivity extends Activity {
 											text = "MSG_TYPE_ACK Rx";
 											if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
 												text += ": missing data chunk";
-												updateAndSendSamplePic(PageForwards);
+                                                // TODO: Use appropriate action from the EPDMainService
+												//updateAndSendSamplePic(PageForwards);
 											} else {
 												text += ": no error";
 											}
@@ -626,13 +609,11 @@ public class MainActivity extends Activity {
 											break;
 										case 0x03: // MSG_TYPE_FORWARD
 											text = "MSG_TYPE_FORWARD Rx";
-                                            PageForwards = true;
-											updateAndSendSamplePic(PageForwards);
+                                            SendMessageToEPDMainService( EPDMainService.MSG_NEXT_CHAPTER_CHUNK_REQ );
 											break;
 										case 0x04: // MSG_TYPE_BACKWARD
 											text = "MSG_TYPE_BACKWARD Rx";
-                                            PageForwards = false;
-											updateAndSendSamplePic(PageForwards);
+                                            SendMessageToEPDMainService( EPDMainService.MSG_PREV_CHAPTER_CHUNK_REQ );
 											break;
 										default:
 											// silently ignore
@@ -659,13 +640,14 @@ public class MainActivity extends Activity {
 
 		}
 	};
+
 	private void showMessage(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
 	}
-	private void service_init() {
+	private void BLEServiceInit() {
 		Intent bindIntent = new Intent(this, UartService.class);
-		bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+		bindService(bindIntent, mBLEServiceConnection, Context.BIND_AUTO_CREATE);
 
 		LocalBroadcastManager.getInstance(this).registerReceiver(UARTStatusChangeReceiver, makeGattUpdateIntentFilter());
 	}
@@ -679,7 +661,41 @@ public class MainActivity extends Activity {
 		return intentFilter;
 	}
 
-	// ---- Panels Manager
+
+    /* Binding the EPD Service with the Main Activity */
+	private void EPDMainServiceInit(){
+		Intent bindIntent = new Intent(this, EPDMainService.class);
+		bindService(bindIntent, mEPDMainServiceConnection, Context.BIND_AUTO_CREATE);
+	}
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case EPDMainService.MSG_CHAPTER_CHUNK_AVAILABLE:
+                    // Send stuff via BLE now
+                    updateAndSendSamplePic( msg.getData().getByteArray(EPDMainService.MSG_BLE_DATA_AVAILABLE) );
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    private void SendMessageToEPDMainService( int what ){
+        try {
+            Message msg = Message.obtain( null, what );
+            msg.replyTo = mMainActivityMessenger;
+            if ( mEPDMainService != null ) {
+                mEPDMainService.send(msg);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    // ---- Panels Manager
 	public void addPanel(SplitPanel p) {
 		FragmentTransaction fragmentTransaction = getFragmentManager()
 				.beginTransaction();

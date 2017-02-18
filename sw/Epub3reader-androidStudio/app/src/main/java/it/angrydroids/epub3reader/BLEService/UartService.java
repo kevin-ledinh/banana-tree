@@ -49,6 +49,7 @@ import java.util.UUID;
  */
 public class UartService extends Service {
     private final static String TAG = UartService.class.getSimpleName();
+    private final boolean DEBUG = true;
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -82,7 +83,9 @@ public class UartService extends Service {
     public static final UUID RX_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
     public static final UUID RX_CHAR_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
     public static final UUID TX_CHAR_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
-    
+
+    public static final byte [] txImageCmd = {0x25 , 0x25 , 0x00};
+    public static final byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
    
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -132,7 +135,9 @@ public class UartService extends Service {
         public void onCharacteristicWrite(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
+            if( DEBUG ) Log.d( TAG , "onCharacteristicWrite: " + status );
+            // TODO: Use a broadcast update here instead of setting a boolean
+            if ( status == BluetoothGatt.GATT_SUCCESS ) {
                 writeOk = true;
             }
         }
@@ -370,6 +375,7 @@ public class UartService extends Service {
                     RxChar.setValue(temp);
                     writeOk = false;
                     status = mBluetoothGatt.writeCharacteristic(RxChar);
+                    // TODO: potential lock-up here
                     while(writeOk == false);
                     j = 0;
                     i++;
@@ -381,6 +387,7 @@ public class UartService extends Service {
                 RxChar.setValue(Arrays.copyOfRange(temp,0,j));
                 writeOk = false;
                 status = mBluetoothGatt.writeCharacteristic(RxChar);
+                // TODO: potential lock-up here
                 while(writeOk == false);
             }
 //            while (mBluetoothGatt.writeCharacteristic(RxChar) == false) ;
