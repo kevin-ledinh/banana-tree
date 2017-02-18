@@ -86,6 +86,7 @@ public class UartService extends Service {
 
     public static final byte [] txImageCmd = {0x25 , 0x25 , 0x00};
     public static final byte [] txImageDoneCmd = {0x25 , 0x25 , 0x02};
+    public static final String BLEDeviceName = "Nordic_UART";
    
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.

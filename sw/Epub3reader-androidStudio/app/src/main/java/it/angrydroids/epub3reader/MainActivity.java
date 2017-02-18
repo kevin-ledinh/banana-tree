@@ -62,6 +62,8 @@ import it.angrydroids.epub3reader.EPDService.EPDMainService;
 
 public class MainActivity extends Activity {
 	private final String TAG = this.getClass().getSimpleName();
+    private final boolean DEBUG = true;
+
 	private final static int REQUEST_ENABLE_BT = 1;
 	private static final int UART_PROFILE_CONNECTED = 20;
 	private static final int UART_PROFILE_DISCONNECTED = 21;
@@ -76,7 +78,6 @@ public class MainActivity extends Activity {
     private BluetoothAdapter mBluetoothAdapter;// Initializes Bluetooth adapter.
     private BluetoothManager bluetoothManager;
 	private BluetoothDevice mDevice = null;
-    private boolean mScanning;
     private Handler mHandler = new Handler();
 	private UartService mService = null;
 
@@ -469,18 +470,15 @@ public class MainActivity extends Activity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					//Auto connect here
 					ConnectBLEDevice();
                 }
             }, SCAN_PERIOD);
 
-            mScanning = true;
 			mState = UART_SCANNING_BLE_DEVICES;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
-            mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
     }
@@ -518,15 +516,21 @@ public class MainActivity extends Activity {
 
 	private void ConnectBLEDevice(){
 		for (BluetoothDevice listDev : deviceList) {
-			if (listDev.getName().equals("Nordic_UART")) {
+			if (listDev.getName().equals( UartService.BLEDeviceName )) {
 				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(listDev.getAddress());
-				mService.connect(listDev.getAddress());
+                mService.connect(listDev.getAddress());
 				break;
 			}
 		}
 	}
 
 	private void updateAndSendSamplePic( byte [] data ) {
+        if ( mState == UART_PROFILE_DISCONNECTED ) {
+            // TODO: Do something here
+            if( DEBUG ) Log.d( TAG , "BLE Device is not connected.");
+            return;
+        }
+
 		try {
             /* Use real book page now */
             // initiate an image transfer session
@@ -598,8 +602,7 @@ public class MainActivity extends Activity {
 											text = "MSG_TYPE_ACK Rx";
 											if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
 												text += ": missing data chunk";
-                                                // TODO: Use appropriate action from the EPDMainService
-												//updateAndSendSamplePic(PageForwards);
+                                                SendMessageToEPDMainService( EPDMainService.MSG_RESEND_CHAPTER_CHUNK );
 											} else {
 												text += ": no error";
 											}
@@ -668,6 +671,7 @@ public class MainActivity extends Activity {
 		bindService(bindIntent, mEPDMainServiceConnection, Context.BIND_AUTO_CREATE);
 	}
 
+    /* Client's (Main Activity) message Handler */
     class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -58,13 +59,24 @@ public class EPDMainService extends Service {
             switch (msg.what) {
                 case MSG_NEW_CHAPTER_AVAILABLE:
                     SetCurrentChapterText( msg.getData().getString( MSG_NEW_CHAPTER_TEXT ) );
-                    // TODO: Prepare the first Chunk and send back to the Main Activity
+                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
                     break;
                 case MSG_NEXT_CHAPTER_CHUNK_REQ:
+                    if( IsNextPageAvailable( true ) ) {
+                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                    } else {
+                        // TODO: Handle empty data here
+                    }
                     break;
                 case MSG_PREV_CHAPTER_CHUNK_REQ:
+                    if( IsNextPageAvailable( false ) ) {
+                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                    } else {
+                        // TODO: Handle empty data here
+                    }
                     break;
                 case MSG_RESEND_CHAPTER_CHUNK:
+                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
                     break;
                 default:
                     super.handleMessage(msg);
@@ -87,12 +99,12 @@ public class EPDMainService extends Service {
         }
     }
 
-    public byte [] GetEPDPageFromCurrentPosition(){
+    private byte [] GetEPDPageFromCurrentPosition(){
         ConvertTextToEPDPage( ChapterTextList.get(CurrentChapterReadIdx) );
         return EPDPageBytes;
     }
 
-    public boolean IsNextPageAvailable( boolean forwards ) {
+    private boolean IsNextPageAvailable( boolean forwards ) {
         boolean pageAvai = false;
         int NextChapterIdx = CurrentChapterReadIdx;
         if( forwards ) {
@@ -141,5 +153,16 @@ public class EPDMainService extends Service {
             i++;
         }
         EPDPageBytes = imageConversion.run(bmpGrayscale);
+    }
+    private Message SendMessageToBLEDevice( int what, String key , byte [] data ){
+        Message msg = Message.obtain( null, what );
+        try {
+            Bundle MsgContent = new Bundle();
+            MsgContent.putByteArray( key , data );
+            msg.setData(MsgContent);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return msg;
     }
 }
