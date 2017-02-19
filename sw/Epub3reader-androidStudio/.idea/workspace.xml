@@ -51,62 +51,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4530831">
-              <caret line="528" column="38" selection-start-line="528" selection-start-column="38" selection-end-line="528" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="463" column="47" selection-start-line="463" selection-start-column="47" selection-end-line="463" selection-end-column="47" />
               <folding>
-                <element signature="e#5747#5748#0" expanded="true" />
-                <element signature="e#5778#5779#0" expanded="true" />
-                <element signature="e#6890#6915#0" expanded="true" />
-                <element signature="e#9249#9275#0" expanded="true" />
-                <element signature="e#9282#9306#0" expanded="true" />
-                <element signature="e#9502#9528#0" expanded="true" />
-                <element signature="e#9535#9559#0" expanded="true" />
-                <element signature="e#9958#9999#0" expanded="true" />
-                <element signature="e#10132#10173#0" expanded="true" />
-                <element signature="e#10226#10269#0" expanded="true" />
-                <element signature="e#10405#10446#0" expanded="true" />
-                <element signature="e#10499#10542#0" expanded="true" />
-                <element signature="e#10687#10728#0" expanded="true" />
-                <element signature="e#11011#11053#0" expanded="true" />
-                <element signature="e#11147#11189#0" expanded="true" />
-                <element signature="e#11444#11481#0" expanded="true" />
-                <element signature="e#11567#11604#0" expanded="true" />
-                <element signature="e#11801#11844#0" expanded="true" />
-                <element signature="e#12146#12189#0" expanded="true" />
-                <element signature="e#12430#12473#0" expanded="true" />
-                <element signature="e#12714#12757#0" expanded="true" />
-                <element signature="e#13007#13035#0" expanded="true" />
-                <element signature="e#13130#13158#0" expanded="true" />
-                <element signature="e#13254#13282#0" expanded="true" />
-                <element signature="e#17449#20520#0" expanded="true" />
-                <element signature="e#20519#20520#0" expanded="true" />
-                <element signature="e#24012#24036#0" expanded="true" />
-                <element signature="e#24070#24094#0" expanded="true" />
-                <element signature="e#24276#24318#0" expanded="true" />
-                <element signature="e#24499#24500#0" expanded="true" />
-                <element signature="e#24549#24550#0" expanded="true" />
-                <element signature="e#24599#24600#0" expanded="true" />
-                <element signature="e#24632#24633#0" expanded="true" />
-                <element signature="e#24674#24675#0" expanded="true" />
-                <element signature="e#24703#24704#0" expanded="true" />
-                <element signature="e#24753#24754#0" expanded="true" />
-                <element signature="e#24787#24788#0" expanded="true" />
-                <element signature="e#24835#24836#0" expanded="true" />
-                <element signature="e#24867#24868#0" expanded="true" />
-                <element signature="e#25025#25026#0" expanded="true" />
-                <element signature="e#25054#25055#0" expanded="true" />
-                <element signature="e#25098#25099#0" expanded="true" />
-                <element signature="e#25124#25125#0" expanded="true" />
-                <element signature="e#25170#25171#0" expanded="true" />
-                <element signature="e#25197#25198#0" expanded="true" />
-                <element signature="e#25303#25304#0" expanded="true" />
-                <element signature="e#25343#25344#0" expanded="true" />
-                <element signature="e#25663#25664#0" expanded="true" />
-                <element signature="e#25697#25698#0" expanded="true" />
-                <element signature="e#25816#25857#0" expanded="true" />
+                <element signature="e#6014#6015#0" expanded="true" />
+                <element signature="e#6045#6046#0" expanded="true" />
+                <element signature="e#18432#18689#0" expanded="true" />
+                <element signature="e#18688#18689#0" expanded="true" />
+                <element signature="e#18807#19126#0" expanded="true" />
+                <element signature="e#19125#19126#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -116,31 +72,21 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BLEService/UartService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="88" column="60" selection-start-line="88" selection-start-column="60" selection-end-line="88" selection-end-column="60" />
-              <folding>
-                <element signature="e#8351#8352#0" expanded="true" />
-                <element signature="e#8398#8399#0" expanded="true" />
-              </folding>
+              <caret line="141" column="20" selection-start-line="141" selection-start-column="20" selection-end-line="141" selection-end-column="20" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BookView.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BookView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="241" column="40" selection-start-line="241" selection-start-column="40" selection-end-line="241" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SplitPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/SplitPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="1.6304348">
+              <caret line="121" column="30" selection-start-line="121" selection-start-column="30" selection-end-line="121" selection-end-column="30" />
+              <folding>
+                <element signature="e#3962#4183#0" expanded="true" />
+                <element signature="e#4182#4183#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,12 +95,9 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/EPDMainService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="56" selection-start-line="49" selection-start-column="56" selection-end-line="49" selection-end-column="56" />
+              <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1446#1454#0" expanded="true" />
-                <element signature="e#1880#1881#0" expanded="true" />
-                <element signature="e#1939#1940#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,7 +108,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1770,8 +1715,8 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/SplitPanel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BLEService/UartService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/EPDMainService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BLEService/UartService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java" />
       </list>
     </option>
@@ -1779,8 +1724,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="784" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1793,16 +1738,46 @@
             <id>Android &gt; Lint &gt; Correctness</id>
           </State>
           <State>
+            <id>Android &gt; Lint &gt; Correctness &gt; Messages</id>
+          </State>
+          <State>
             <id>Android &gt; Lint &gt; Performance</id>
+          </State>
+          <State>
+            <id>Android &gt; Lint &gt; Security</id>
+          </State>
+          <State>
+            <id>Android &gt; Lint &gt; Usability</id>
+          </State>
+          <State>
+            <id>Android &gt; Lint &gt; Usability &gt; Icons</id>
+          </State>
+          <State>
+            <id>C/C++</id>
+          </State>
+          <State>
+            <id>Declaration redundancyJava</id>
+          </State>
+          <State>
+            <id>Dependency issuesJava</id>
           </State>
           <State>
             <id>General</id>
           </State>
           <State>
+            <id>GeneralC/C++</id>
+          </State>
+          <State>
             <id>Google Cloud Endpoints</id>
           </State>
           <State>
+            <id>ImportsJava</id>
+          </State>
+          <State>
             <id>Java</id>
+          </State>
+          <State>
+            <id>Java language level migration aidsJava</id>
           </State>
           <State>
             <id>Performance issuesJava</id>
@@ -1812,6 +1787,15 @@
           </State>
           <State>
             <id>Properties Files</id>
+          </State>
+          <State>
+            <id>TestNGJava</id>
+          </State>
+          <State>
+            <id>Threading issuesJava</id>
+          </State>
+          <State>
+            <id>Unused codeC/C++</id>
           </State>
           <State>
             <id>XML</id>
@@ -1850,6 +1834,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1867,76 +1854,15 @@
               <option name="myItemId" value="Epub3reader-androidStudio" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Epub3reader-androidStudio" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="epub3reader" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Epub3reader-androidStudio" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="epub3reader" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BLEService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Epub3reader-androidStudio" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="device.picker.selection" value="CB5A24F0PE" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../epubViewer" />
@@ -2220,8 +2146,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -2229,7 +2155,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4313099" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4307036" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2237,10 +2163,10 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1732224" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35942492" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17270789" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35927504" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24886535" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24840085" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39872068" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2266,102 +2192,34 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java</url>
-          <line>431</line>
-          <properties />
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="32" />
+      <option name="time" value="39" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EpubManipulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EpubNavigator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="344" column="21" selection-start-line="344" selection-start-column="21" selection-end-line="344" selection-end-column="21" />
           <folding>
-            <element signature="e#5747#5748#0" expanded="true" />
-            <element signature="e#5778#5779#0" expanded="true" />
-            <element signature="e#6890#6915#0" expanded="true" />
-            <element signature="e#9249#9275#0" expanded="true" />
-            <element signature="e#9282#9306#0" expanded="true" />
-            <element signature="e#9502#9528#0" expanded="true" />
-            <element signature="e#9535#9559#0" expanded="true" />
-            <element signature="e#9958#9999#0" expanded="true" />
-            <element signature="e#10132#10173#0" expanded="true" />
-            <element signature="e#10226#10269#0" expanded="true" />
-            <element signature="e#10405#10446#0" expanded="true" />
-            <element signature="e#10499#10542#0" expanded="true" />
-            <element signature="e#10687#10728#0" expanded="true" />
-            <element signature="e#11011#11053#0" expanded="true" />
-            <element signature="e#11147#11189#0" expanded="true" />
-            <element signature="e#11444#11481#0" expanded="true" />
-            <element signature="e#11567#11604#0" expanded="true" />
-            <element signature="e#11801#11844#0" expanded="true" />
-            <element signature="e#12146#12189#0" expanded="true" />
-            <element signature="e#12430#12473#0" expanded="true" />
-            <element signature="e#12714#12757#0" expanded="true" />
-            <element signature="e#13007#13035#0" expanded="true" />
-            <element signature="e#13130#13158#0" expanded="true" />
-            <element signature="e#13254#13282#0" expanded="true" />
-            <element signature="e#17449#20520#0" expanded="true" />
-            <element signature="e#20519#20520#0" expanded="true" />
-            <element signature="e#24012#24036#0" expanded="true" />
-            <element signature="e#24070#24094#0" expanded="true" />
-            <element signature="e#24276#24318#0" expanded="true" />
-            <element signature="e#24499#24500#0" expanded="true" />
-            <element signature="e#24549#24550#0" expanded="true" />
-            <element signature="e#24599#24600#0" expanded="true" />
-            <element signature="e#24632#24633#0" expanded="true" />
-            <element signature="e#24674#24675#0" expanded="true" />
-            <element signature="e#24703#24704#0" expanded="true" />
-            <element signature="e#24753#24754#0" expanded="true" />
-            <element signature="e#24787#24788#0" expanded="true" />
-            <element signature="e#24835#24836#0" expanded="true" />
-            <element signature="e#24867#24868#0" expanded="true" />
-            <element signature="e#25025#25026#0" expanded="true" />
-            <element signature="e#25054#25055#0" expanded="true" />
-            <element signature="e#25098#25099#0" expanded="true" />
-            <element signature="e#25124#25125#0" expanded="true" />
-            <element signature="e#25170#25171#0" expanded="true" />
-            <element signature="e#25197#25198#0" expanded="true" />
-            <element signature="e#25303#25304#0" expanded="true" />
-            <element signature="e#25343#25344#0" expanded="true" />
-            <element signature="e#25663#25664#0" expanded="true" />
-            <element signature="e#25697#25698#0" expanded="true" />
-            <element signature="e#25816#25857#0" expanded="true" />
+            <element signature="e#6014#6015#0" expanded="true" />
+            <element signature="e#6045#6046#0" expanded="true" />
+            <element signature="e#18432#18689#0" expanded="true" />
+            <element signature="e#18688#18689#0" expanded="true" />
+            <element signature="e#18807#19126#0" expanded="true" />
+            <element signature="e#19125#19126#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_book_view.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="63" column="63" selection-start-line="63" selection-start-column="63" selection-end-line="63" selection-end-column="63" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/SplitPanel.java">
@@ -2373,21 +2231,23 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="240" column="68" selection-start-line="240" selection-start-column="68" selection-end-line="240" selection-end-column="68" />
-          <folding />
+          <folding>
+            <element signature="e#3962#4183#0" expanded="true" />
+            <element signature="e#4182#4183#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2405,9 +2265,6 @@
           <caret line="10" column="44" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1446#1454#0" expanded="true" />
-            <element signature="e#1880#1881#0" expanded="true" />
-            <element signature="e#1939#1940#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2417,69 +2274,24 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="356" column="32" selection-start-line="356" selection-start-column="32" selection-end-line="356" selection-end-column="32" />
           <folding>
-            <element signature="e#5747#5748#0" expanded="true" />
-            <element signature="e#5778#5779#0" expanded="true" />
-            <element signature="e#6890#6915#0" expanded="true" />
-            <element signature="e#9249#9275#0" expanded="true" />
-            <element signature="e#9282#9306#0" expanded="true" />
-            <element signature="e#9502#9528#0" expanded="true" />
-            <element signature="e#9535#9559#0" expanded="true" />
-            <element signature="e#9958#9999#0" expanded="true" />
-            <element signature="e#10132#10173#0" expanded="true" />
-            <element signature="e#10226#10269#0" expanded="true" />
-            <element signature="e#10405#10446#0" expanded="true" />
-            <element signature="e#10499#10542#0" expanded="true" />
-            <element signature="e#10687#10728#0" expanded="true" />
-            <element signature="e#11011#11053#0" expanded="true" />
-            <element signature="e#11147#11189#0" expanded="true" />
-            <element signature="e#11444#11481#0" expanded="true" />
-            <element signature="e#11567#11604#0" expanded="true" />
-            <element signature="e#11801#11844#0" expanded="true" />
-            <element signature="e#12146#12189#0" expanded="true" />
-            <element signature="e#12430#12473#0" expanded="true" />
-            <element signature="e#12714#12757#0" expanded="true" />
-            <element signature="e#13007#13035#0" expanded="true" />
-            <element signature="e#13130#13158#0" expanded="true" />
-            <element signature="e#13254#13282#0" expanded="true" />
-            <element signature="e#17449#20520#0" expanded="true" />
-            <element signature="e#20519#20520#0" expanded="true" />
-            <element signature="e#24012#24036#0" expanded="true" />
-            <element signature="e#24070#24094#0" expanded="true" />
-            <element signature="e#24276#24318#0" expanded="true" />
-            <element signature="e#24499#24500#0" expanded="true" />
-            <element signature="e#24549#24550#0" expanded="true" />
-            <element signature="e#24599#24600#0" expanded="true" />
-            <element signature="e#24632#24633#0" expanded="true" />
-            <element signature="e#24674#24675#0" expanded="true" />
-            <element signature="e#24703#24704#0" expanded="true" />
-            <element signature="e#24753#24754#0" expanded="true" />
-            <element signature="e#24787#24788#0" expanded="true" />
-            <element signature="e#24835#24836#0" expanded="true" />
-            <element signature="e#24867#24868#0" expanded="true" />
-            <element signature="e#25025#25026#0" expanded="true" />
-            <element signature="e#25054#25055#0" expanded="true" />
-            <element signature="e#25098#25099#0" expanded="true" />
-            <element signature="e#25124#25125#0" expanded="true" />
-            <element signature="e#25170#25171#0" expanded="true" />
-            <element signature="e#25197#25198#0" expanded="true" />
-            <element signature="e#25303#25304#0" expanded="true" />
-            <element signature="e#25343#25344#0" expanded="true" />
-            <element signature="e#25663#25664#0" expanded="true" />
-            <element signature="e#25697#25698#0" expanded="true" />
-            <element signature="e#25816#25857#0" expanded="true" />
+            <element signature="e#6014#6015#0" expanded="true" />
+            <element signature="e#6045#6046#0" expanded="true" />
+            <element signature="e#18432#18689#0" expanded="true" />
+            <element signature="e#18688#18689#0" expanded="true" />
+            <element signature="e#18807#19126#0" expanded="true" />
+            <element signature="e#19125#19126#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_book_view.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="63" column="63" selection-start-line="63" selection-start-column="63" selection-end-line="63" selection-end-column="63" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/SplitPanel.java">
@@ -2491,21 +2303,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2513,7 +2323,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#3962#4183#0" expanded="true" />
+            <element signature="e#4182#4183#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2529,7 +2342,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#3962#4183#0" expanded="true" />
+            <element signature="e#4182#4183#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2548,25 +2364,23 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_data_view.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="9.272727">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/change_css.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="11.6">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/ChangeCSSMenu.java">
@@ -2587,43 +2401,39 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-land/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.0909091">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_split_panel.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="9.272727">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/tocview.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2631,19 +2441,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/file_chooser_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.7818182">
           <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
-          <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/FileChooser.java">
@@ -2657,7 +2465,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3076923">
           <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2673,33 +2480,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-16.115385">
           <caret line="50" column="76" selection-start-line="50" selection-start-column="76" selection-end-line="50" selection-end-column="76" />
-          <folding>
-            <element signature="e#118#132#0" expanded="true" />
-            <element signature="e#217#238#0" expanded="true" />
-            <element signature="e#306#327#0" expanded="true" />
-            <element signature="e#410#441#0" expanded="true" />
-            <element signature="e#519#540#0" expanded="true" />
-            <element signature="e#629#650#0" expanded="true" />
-            <element signature="e#766#793#0" expanded="true" />
-            <element signature="e#874#900#0" expanded="true" />
-            <element signature="e#1010#1043#0" expanded="true" />
-            <element signature="e#1102#1135#0" expanded="true" />
-            <element signature="e#1221#1244#0" expanded="true" />
-            <element signature="e#1317#1333#0" expanded="true" />
-            <element signature="e#1416#1432#0" expanded="true" />
-            <element signature="e#1556#1583#0" expanded="true" />
-            <element signature="e#1655#1671#0" expanded="true" />
-            <element signature="e#1753#1769#0" expanded="true" />
-            <element signature="e#1877#1898#0" expanded="true" />
-            <element signature="e#2009#2030#0" expanded="true" />
-            <element signature="e#2131#2147#0" expanded="true" />
-            <element signature="e#2235#2251#0" expanded="true" />
-            <element signature="e#2359#2379#0" expanded="true" />
-            <element signature="e#2460#2475#0" expanded="true" />
-            <element signature="e#2553#2569#0" expanded="true" />
-            <element signature="e#2634#2650#0" expanded="true" />
-            <element signature="e#2731#2756#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2739,14 +2519,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_book_view.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
-          <folding />
         </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/app/libs/epublib-core-latest.jar!/nl/siegmann/epublib/domain/Book.class">
@@ -2795,7 +2574,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.124125876">
           <caret line="22" column="57" selection-start-line="22" selection-start-column="57" selection-end-line="22" selection-end-column="57" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/ConvertTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2807,18 +2595,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/ConvertTools.java">
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-19/android.jar!/android/os/Message.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-          <folding />
+        <state vertical-scroll-proportion="-3.6296296">
+          <caret line="82" column="18" selection-start-line="82" selection-start-column="18" selection-end-line="82" selection-end-column="18" />
+          <folding>
+            <element signature="e#2052#2053#0" expanded="true" />
+            <element signature="e#2103#2104#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java">
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-19/android.jar!/android/bluetooth/BluetoothGatt.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="241" column="40" selection-start-line="241" selection-start-column="40" selection-end-line="241" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.26327434">
+          <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -2826,82 +2617,43 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BLEService/UartService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="60" selection-start-line="88" selection-start-column="60" selection-end-line="88" selection-end-column="60" />
-          <folding>
-            <element signature="e#8351#8352#0" expanded="true" />
-            <element signature="e#8398#8399#0" expanded="true" />
-          </folding>
+          <caret line="141" column="20" selection-start-line="141" selection-start-column="20" selection-end-line="141" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/EPDMainService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="56" selection-start-line="49" selection-start-column="56" selection-end-line="49" selection-end-column="56" />
+          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1446#1454#0" expanded="true" />
-            <element signature="e#1880#1881#0" expanded="true" />
-            <element signature="e#1939#1940#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4530831">
-          <caret line="528" column="38" selection-start-line="528" selection-start-column="38" selection-end-line="528" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="463" column="47" selection-start-line="463" selection-start-column="47" selection-end-line="463" selection-end-column="47" />
           <folding>
-            <element signature="e#5747#5748#0" expanded="true" />
-            <element signature="e#5778#5779#0" expanded="true" />
-            <element signature="e#6890#6915#0" expanded="true" />
-            <element signature="e#9249#9275#0" expanded="true" />
-            <element signature="e#9282#9306#0" expanded="true" />
-            <element signature="e#9502#9528#0" expanded="true" />
-            <element signature="e#9535#9559#0" expanded="true" />
-            <element signature="e#9958#9999#0" expanded="true" />
-            <element signature="e#10132#10173#0" expanded="true" />
-            <element signature="e#10226#10269#0" expanded="true" />
-            <element signature="e#10405#10446#0" expanded="true" />
-            <element signature="e#10499#10542#0" expanded="true" />
-            <element signature="e#10687#10728#0" expanded="true" />
-            <element signature="e#11011#11053#0" expanded="true" />
-            <element signature="e#11147#11189#0" expanded="true" />
-            <element signature="e#11444#11481#0" expanded="true" />
-            <element signature="e#11567#11604#0" expanded="true" />
-            <element signature="e#11801#11844#0" expanded="true" />
-            <element signature="e#12146#12189#0" expanded="true" />
-            <element signature="e#12430#12473#0" expanded="true" />
-            <element signature="e#12714#12757#0" expanded="true" />
-            <element signature="e#13007#13035#0" expanded="true" />
-            <element signature="e#13130#13158#0" expanded="true" />
-            <element signature="e#13254#13282#0" expanded="true" />
-            <element signature="e#17449#20520#0" expanded="true" />
-            <element signature="e#20519#20520#0" expanded="true" />
-            <element signature="e#24012#24036#0" expanded="true" />
-            <element signature="e#24070#24094#0" expanded="true" />
-            <element signature="e#24276#24318#0" expanded="true" />
-            <element signature="e#24499#24500#0" expanded="true" />
-            <element signature="e#24549#24550#0" expanded="true" />
-            <element signature="e#24599#24600#0" expanded="true" />
-            <element signature="e#24632#24633#0" expanded="true" />
-            <element signature="e#24674#24675#0" expanded="true" />
-            <element signature="e#24703#24704#0" expanded="true" />
-            <element signature="e#24753#24754#0" expanded="true" />
-            <element signature="e#24787#24788#0" expanded="true" />
-            <element signature="e#24835#24836#0" expanded="true" />
-            <element signature="e#24867#24868#0" expanded="true" />
-            <element signature="e#25025#25026#0" expanded="true" />
-            <element signature="e#25054#25055#0" expanded="true" />
-            <element signature="e#25098#25099#0" expanded="true" />
-            <element signature="e#25124#25125#0" expanded="true" />
-            <element signature="e#25170#25171#0" expanded="true" />
-            <element signature="e#25197#25198#0" expanded="true" />
-            <element signature="e#25303#25304#0" expanded="true" />
-            <element signature="e#25343#25344#0" expanded="true" />
-            <element signature="e#25663#25664#0" expanded="true" />
-            <element signature="e#25697#25698#0" expanded="true" />
-            <element signature="e#25816#25857#0" expanded="true" />
+            <element signature="e#6014#6015#0" expanded="true" />
+            <element signature="e#6045#6046#0" expanded="true" />
+            <element signature="e#18432#18689#0" expanded="true" />
+            <element signature="e#18688#18689#0" expanded="true" />
+            <element signature="e#18807#19126#0" expanded="true" />
+            <element signature="e#19125#19126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.6304348">
+          <caret line="121" column="30" selection-start-line="121" selection-start-column="30" selection-end-line="121" selection-end-column="30" />
+          <folding>
+            <element signature="e#3962#4183#0" expanded="true" />
+            <element signature="e#4182#4183#0" expanded="true" />
           </folding>
         </state>
       </provider>

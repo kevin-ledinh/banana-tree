@@ -136,10 +136,11 @@ public class UartService extends Service {
         public void onCharacteristicWrite(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
-            if( DEBUG ) Log.d( TAG , "onCharacteristicWrite: " + status );
             // TODO: Use a broadcast update here instead of setting a boolean
             if ( status == BluetoothGatt.GATT_SUCCESS ) {
                 writeOk = true;
+            } else {
+                if( DEBUG ) Log.d( TAG , "onCharacteristicWrite Failed." );
             }
         }
 

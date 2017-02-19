@@ -43,6 +43,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
@@ -74,7 +75,7 @@ public class MainActivity extends Activity {
 	protected int panelCount;
 	protected String[] settings;
 
-	private int mState = UART_PROFILE_DISCONNECTED;
+	private int mBLEState = UART_PROFILE_DISCONNECTED;
     private BluetoothAdapter mBluetoothAdapter;// Initializes Bluetooth adapter.
     private BluetoothManager bluetoothManager;
 	private BluetoothDevice mDevice = null;
@@ -153,6 +154,14 @@ public class MainActivity extends Activity {
 									   IBinder service) {
 			// We've bound to LocalService, cast the IBinder and get LocalService instance
 			mEPDMainService = new Messenger(service);
+			try {
+				Message msg = Message.obtain(null,
+						EPDMainService.MSG_REGISTER_CLIENT);
+				msg.replyTo = mMainActivityMessenger;
+				mEPDMainService.send(msg);
+			} catch (RemoteException ex) {
+				ex.printStackTrace();
+			}
 		}
 
 		@Override
@@ -264,7 +273,17 @@ public class MainActivity extends Activity {
 		else
 			menu.findItem(R.id.changeSize).setVisible(true);
 
-		return true;
+        switch(mBLEState) {
+            case UART_PROFILE_CONNECTED:
+                menu.findItem(R.id.ScanBLE).setTitle("Disconnect BLE");
+                break;
+            case UART_PROFILE_DISCONNECTED:
+                menu.findItem(R.id.ScanBLE).setTitle("Scan BLE");
+            default:
+                break;
+        }
+
+        return true;
 	}
 
 	@Override
@@ -431,10 +450,11 @@ public class MainActivity extends Activity {
         case R.id.ScanBLE:
 			Log.i(TAG, "Scanning button is pressed");
             // auto scan and attach BLE device here.
-			switch (mState) {
+			switch (mBLEState) {
 				case UART_PROFILE_DISCONNECTED:
                     Toast.makeText(this, "Scanning for BLE devices", Toast.LENGTH_SHORT).show();
 					scanBLEDevices();
+                    item.setTitle("Scanning...");
 					break;
 				case UART_PROFILE_CONNECTED:
                     if (mDevice != null) {
@@ -455,7 +475,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	// ---- BLE Service
+    // ---- BLE Service
     private void scanBLEDevices()
     {
         // Ensures Bluetooth is available on the device and it is enabled. If not,
@@ -476,7 +496,7 @@ public class MainActivity extends Activity {
                 }
             }, SCAN_PERIOD);
 
-			mState = UART_SCANNING_BLE_DEVICES;
+			mBLEState = UART_SCANNING_BLE_DEVICES;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -525,7 +545,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void updateAndSendSamplePic( byte [] data ) {
-        if ( mState == UART_PROFILE_DISCONNECTED ) {
+        if ( mBLEState == UART_PROFILE_DISCONNECTED ) {
             // TODO: Do something here
             if( DEBUG ) Log.d( TAG , "BLE Device is not connected.");
             return;
@@ -558,7 +578,7 @@ public class MainActivity extends Activity {
 					public void run() {
                         Toast.makeText(MainActivity.this, "EPD connected", Toast.LENGTH_SHORT).show();
 						Log.d(TAG, "ACTION_GATT_CONNECTED");
-						mState = UART_PROFILE_CONNECTED;
+						mBLEState = UART_PROFILE_CONNECTED;
                     }
 				});
 			}
@@ -569,8 +589,9 @@ public class MainActivity extends Activity {
 					public void run() {
                         Toast.makeText(MainActivity.this, "EPD disconnected", Toast.LENGTH_SHORT).show();
 						Log.d(TAG, "UART_DISCONNECT_MSG");
-						mState = UART_PROFILE_DISCONNECTED;
+						mBLEState = UART_PROFILE_DISCONNECTED;
 						mService.close();
+                        invalidateOptionsMenu();
 					}
 				});
 			}

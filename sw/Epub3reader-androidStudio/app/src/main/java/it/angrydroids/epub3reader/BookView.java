@@ -237,8 +237,8 @@ public class BookView extends SplitPanel {
 		{
             try {
                 Bundle newChapter = new Bundle();
-                newChapter.putString(EPDMainService.MSG_NEW_CHAPTER_TEXT, aContent );
-                Message msg = new Message();
+                newChapter.putString( EPDMainService.MSG_NEW_CHAPTER_TEXT, aContent );
+                Message msg = Message.obtain( null, EPDMainService.MSG_NEW_CHAPTER_AVAILABLE );
                 msg.setData(newChapter);
                 msg.replyTo = ((MainActivity) getActivity()).mMainActivityMessenger;
                 if (((MainActivity) getActivity()).mEPDMainService != null) {

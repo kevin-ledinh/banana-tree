@@ -29,12 +29,14 @@ public class EPDMainService extends Service {
     public static final int MSG_PREV_CHAPTER_CHUNK_REQ = 3;
     public static final int MSG_CHAPTER_CHUNK_AVAILABLE = 4;
     public static final int MSG_RESEND_CHAPTER_CHUNK = 5;
+    public static final int MSG_REGISTER_CLIENT = 6;
 
     public static final String MSG_NEW_CHAPTER_TEXT = "it.angrydroids.epub3reader.EPDService.MSG_NEW_CHAPTER_TEXT";
     public static final String MSG_BLE_DATA_AVAILABLE = "it.angrydroids.epub3reader.EPDService.MSG_BLE_DATA_AVAILABLE";
 
     // Variables for Android Service
     private final Messenger mEPDMainServiceMessenger = new Messenger(new IncomingHandler());
+    private Messenger mEPDClient;
 
     /* Ebook text buffer */
     private List<String> ChapterTextList = new ArrayList<String>();
@@ -59,24 +61,27 @@ public class EPDMainService extends Service {
             switch (msg.what) {
                 case MSG_NEW_CHAPTER_AVAILABLE:
                     SetCurrentChapterText( msg.getData().getString( MSG_NEW_CHAPTER_TEXT ) );
-                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
                     break;
                 case MSG_NEXT_CHAPTER_CHUNK_REQ:
                     if( IsNextPageAvailable( true ) ) {
-                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
                     } else {
                         // TODO: Handle empty data here
                     }
                     break;
                 case MSG_PREV_CHAPTER_CHUNK_REQ:
                     if( IsNextPageAvailable( false ) ) {
-                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
                     } else {
                         // TODO: Handle empty data here
                     }
                     break;
                 case MSG_RESEND_CHAPTER_CHUNK:
-                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() );
+                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
+                    break;
+                case MSG_REGISTER_CLIENT:
+                    mEPDClient = msg.replyTo;
                     break;
                 default:
                     super.handleMessage(msg);
@@ -154,12 +159,13 @@ public class EPDMainService extends Service {
         }
         EPDPageBytes = imageConversion.run(bmpGrayscale);
     }
-    private Message SendMessageToBLEDevice( int what, String key , byte [] data ){
+    private Message SendMessageToBLEDevice(int what, String key , byte [] data, Messenger mClient ){
         Message msg = Message.obtain( null, what );
         try {
             Bundle MsgContent = new Bundle();
             MsgContent.putByteArray( key , data );
             msg.setData(MsgContent);
+            mClient.send( msg );
         } catch (Exception ex) {
             ex.printStackTrace();
         }
