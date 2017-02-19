@@ -696,13 +696,23 @@ public class MainActivity extends Activity {
     class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case EPDMainService.MSG_CHAPTER_CHUNK_AVAILABLE:
-                    // Send stuff via BLE now
-                    updateAndSendSamplePic( msg.getData().getByteArray(EPDMainService.MSG_BLE_DATA_AVAILABLE) );
-                    break;
-                default:
-                    super.handleMessage(msg);
+            try {
+                switch (msg.what) {
+                    case EPDMainService.MSG_CHAPTER_CHUNK_AVAILABLE:
+                        // Send stuff via BLE now
+                        updateAndSendSamplePic(msg.getData().getByteArray(EPDMainService.MSG_BLE_DATA_AVAILABLE));
+                        break;
+                    case EPDMainService.MSG_LOAD_NEXT_CHAPTER_REQ:
+                        navigator.goToNextChapter( 0 );
+                        break;
+                    case EPDMainService.MSG_LOAD_PREV_CHAPTER_REQ:
+                        navigator.goToPrevChapter( 0 );
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }

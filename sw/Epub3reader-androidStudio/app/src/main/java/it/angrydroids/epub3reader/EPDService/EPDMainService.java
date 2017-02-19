@@ -30,6 +30,8 @@ public class EPDMainService extends Service {
     public static final int MSG_CHAPTER_CHUNK_AVAILABLE = 4;
     public static final int MSG_RESEND_CHAPTER_CHUNK = 5;
     public static final int MSG_REGISTER_CLIENT = 6;
+    public static final int MSG_LOAD_NEXT_CHAPTER_REQ = 7;
+    public static final int MSG_LOAD_PREV_CHAPTER_REQ = 8;
 
     public static final String MSG_NEW_CHAPTER_TEXT = "it.angrydroids.epub3reader.EPDService.MSG_NEW_CHAPTER_TEXT";
     public static final String MSG_BLE_DATA_AVAILABLE = "it.angrydroids.epub3reader.EPDService.MSG_BLE_DATA_AVAILABLE";
@@ -67,14 +69,28 @@ public class EPDMainService extends Service {
                     if( IsNextPageAvailable( true ) ) {
                         SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
                     } else {
-                        // TODO: Handle empty data here
+                        // We are at the end of the chapter
+                        // Need to load the next chapter
+                        try {
+                            Message newMsg = Message.obtain(null, MSG_LOAD_NEXT_CHAPTER_REQ);
+                            mEPDClient.send(newMsg);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                     break;
                 case MSG_PREV_CHAPTER_CHUNK_REQ:
                     if( IsNextPageAvailable( false ) ) {
                         SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
                     } else {
-                        // TODO: Handle empty data here
+                        // We are at the beginning of the chapter
+                        // Need to load the previous chapter
+                        try {
+                            Message newMsg = Message.obtain(null, MSG_LOAD_PREV_CHAPTER_REQ);
+                            mEPDClient.send(newMsg);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                     break;
                 case MSG_RESEND_CHAPTER_CHUNK:
@@ -159,6 +175,7 @@ public class EPDMainService extends Service {
         }
         EPDPageBytes = imageConversion.run(bmpGrayscale);
     }
+
     private Message SendMessageToBLEDevice(int what, String key , byte [] data, Messenger mClient ){
         Message msg = Message.obtain( null, what );
         try {

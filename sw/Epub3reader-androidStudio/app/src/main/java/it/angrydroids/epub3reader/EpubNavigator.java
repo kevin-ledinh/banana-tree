@@ -44,7 +44,6 @@ public class EpubNavigator {
     private boolean parallelText = false;
     private MainActivity activity;
     private static Context context;
-    private BLEMainService mBLEMainService;
 
     public EpubNavigator(int numberOfBooks, MainActivity a) {
         nBooks = numberOfBooks;
