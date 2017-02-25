@@ -32,6 +32,7 @@ public class EPDMainService extends Service {
     public static final int MSG_REGISTER_CLIENT = 6;
     public static final int MSG_LOAD_NEXT_CHAPTER_REQ = 7;
     public static final int MSG_LOAD_PREV_CHAPTER_REQ = 8;
+    public static final int MSG_SEND_SUCCESS = 9;
 
     public static final String MSG_NEW_CHAPTER_TEXT = "it.angrydroids.epub3reader.EPDService.MSG_NEW_CHAPTER_TEXT";
     public static final String MSG_BLE_DATA_AVAILABLE = "it.angrydroids.epub3reader.EPDService.MSG_BLE_DATA_AVAILABLE";
@@ -43,6 +44,8 @@ public class EPDMainService extends Service {
     /* Ebook text buffer */
     private List<String> ChapterTextList = new ArrayList<String>();
     private int CurrentChapterReadIdx = 0;
+    private boolean mImageInTransmit = false;
+    private boolean mNewTextAvailable = false;
 
     /* EPD file format support */
     private byte EPDPageBytes [] = new byte[32767];
@@ -63,41 +66,30 @@ public class EPDMainService extends Service {
             switch (msg.what) {
                 case MSG_NEW_CHAPTER_AVAILABLE:
                     SetCurrentChapterText( msg.getData().getString( MSG_NEW_CHAPTER_TEXT ) );
-                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
+                    if( ! mImageInTransmit ) {
+                        SendMessageToBLEDevice(MSG_CHAPTER_CHUNK_AVAILABLE, MSG_BLE_DATA_AVAILABLE, GetEPDPageFromCurrentPosition(), mEPDClient);
+                    }
                     break;
                 case MSG_NEXT_CHAPTER_CHUNK_REQ:
-                    if( IsNextPageAvailable( true ) ) {
-                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
-                    } else {
-                        // We are at the end of the chapter
-                        // Need to load the next chapter
-                        try {
-                            Message newMsg = Message.obtain(null, MSG_LOAD_NEXT_CHAPTER_REQ);
-                            mEPDClient.send(newMsg);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
+                    SendChapterChunk( true );
                     break;
                 case MSG_PREV_CHAPTER_CHUNK_REQ:
-                    if( IsNextPageAvailable( false ) ) {
-                        SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
-                    } else {
-                        // We are at the beginning of the chapter
-                        // Need to load the previous chapter
-                        try {
-                            Message newMsg = Message.obtain(null, MSG_LOAD_PREV_CHAPTER_REQ);
-                            mEPDClient.send(newMsg);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
+                    SendChapterChunk( false );
                     break;
                 case MSG_RESEND_CHAPTER_CHUNK:
-                    SendMessageToBLEDevice( MSG_CHAPTER_CHUNK_AVAILABLE , MSG_BLE_DATA_AVAILABLE , GetEPDPageFromCurrentPosition() , mEPDClient );
+                    if( ! mImageInTransmit ) {
+                        SendMessageToBLEDevice(MSG_CHAPTER_CHUNK_AVAILABLE, MSG_BLE_DATA_AVAILABLE, GetEPDPageFromCurrentPosition(), mEPDClient);
+                    }
                     break;
                 case MSG_REGISTER_CLIENT:
                     mEPDClient = msg.replyTo;
+                    break;
+                case MSG_SEND_SUCCESS:
+                    mImageInTransmit = false;
+                    if( mNewTextAvailable ) {
+                        mNewTextAvailable = false;
+                        SendMessageToBLEDevice(MSG_CHAPTER_CHUNK_AVAILABLE, MSG_BLE_DATA_AVAILABLE, GetEPDPageFromCurrentPosition(), mEPDClient);
+                    }
                     break;
                 default:
                     super.handleMessage(msg);
@@ -108,6 +100,26 @@ public class EPDMainService extends Service {
      * End of code to handle Android Service
      *
      **************************************************/
+
+    private void SendChapterChunk( boolean forwards ) {
+        if( IsNextPageAvailable( forwards ) ) {
+            if( ! mImageInTransmit ) {
+                SendMessageToBLEDevice(MSG_CHAPTER_CHUNK_AVAILABLE, MSG_BLE_DATA_AVAILABLE, GetEPDPageFromCurrentPosition(), mEPDClient);
+                mImageInTransmit = true;
+            } else {
+                mNewTextAvailable = true;
+            }
+        } else {
+            // We are at the end of the chapter
+            // Need to load the next chapter
+            try {
+                Message newMsg = Message.obtain(null, MSG_LOAD_NEXT_CHAPTER_REQ);
+                mEPDClient.send(newMsg);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     private void SetCurrentChapterText( String text ){
         int index = 0;
