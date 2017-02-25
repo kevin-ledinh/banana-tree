@@ -32,7 +32,7 @@ public class EPDMainService extends Service {
     public static final int MSG_REGISTER_CLIENT = 6;
     public static final int MSG_LOAD_NEXT_CHAPTER_REQ = 7;
     public static final int MSG_LOAD_PREV_CHAPTER_REQ = 8;
-    public static final int MSG_SEND_SUCCESS = 9;
+    public static final int MSG_ACK_RECEIVED = 9;
 
     public static final String MSG_NEW_CHAPTER_TEXT = "it.angrydroids.epub3reader.EPDService.MSG_NEW_CHAPTER_TEXT";
     public static final String MSG_BLE_DATA_AVAILABLE = "it.angrydroids.epub3reader.EPDService.MSG_BLE_DATA_AVAILABLE";
@@ -84,7 +84,7 @@ public class EPDMainService extends Service {
                 case MSG_REGISTER_CLIENT:
                     mEPDClient = msg.replyTo;
                     break;
-                case MSG_SEND_SUCCESS:
+                case MSG_ACK_RECEIVED:
                     mImageInTransmit = false;
                     if( mNewTextAvailable ) {
                         mNewTextAvailable = false;

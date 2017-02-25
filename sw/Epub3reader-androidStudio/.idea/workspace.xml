@@ -54,8 +54,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.979933">
-              <caret line="456" column="49" selection-start-line="456" selection-start-column="49" selection-end-line="456" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.31270903">
+              <caret line="624" column="104" selection-start-line="624" selection-start-column="104" selection-end-line="624" selection-end-column="104" />
               <folding />
             </state>
           </provider>
@@ -1640,8 +1640,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BookView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/BLEService/UartService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EpubNavigator.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/EPDService/EPDMainService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -2547,8 +2547,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/it/angrydroids/epub3reader/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.979933">
-          <caret line="456" column="49" selection-start-line="456" selection-start-column="49" selection-end-line="456" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.31270903">
+          <caret line="624" column="104" selection-start-line="624" selection-start-column="104" selection-end-line="624" selection-end-column="104" />
           <folding />
         </state>
       </provider>

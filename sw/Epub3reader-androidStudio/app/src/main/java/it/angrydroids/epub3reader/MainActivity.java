@@ -622,7 +622,7 @@ public class MainActivity extends Activity {
                                         case 0x01: //MSG_TYPE_ACK
                                             text = "MSG_TYPE_ACK Rx";
                                             //Send a success back to EDP Service
-                                            SendMessageToEPDMainService( EPDMainService.MSG_SEND_SUCCESS );
+                                            SendMessageToEPDMainService( EPDMainService.MSG_ACK_RECEIVED);
                                             if( ( ( txValue[4] << 8 ) | txValue[3] ) == 0x0001) {
                                                 text += ": missing data chunk";
                                                 SendMessageToEPDMainService( EPDMainService.MSG_RESEND_CHAPTER_CHUNK );
