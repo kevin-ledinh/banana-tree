@@ -235,6 +235,10 @@ public class BookView extends SplitPanel {
 		@JavascriptInterface
 		public void processContent(String aContent)
 		{
+            if( aContent.equals("") ) {
+                return;
+            }
+
             try {
                 Bundle newChapter = new Bundle();
                 newChapter.putString( EPDMainService.MSG_NEW_CHAPTER_TEXT, aContent );
